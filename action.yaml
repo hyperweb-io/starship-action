@@ -1,0 +1,85 @@
+name: "Shuttle Devnet"
+description: "Run mini cosmos ecosystem via devnet"
+inputs:
+  values:
+    description: "Values yaml raw data of filename for helm that define the topology for the devnet"
+    required: true
+  port-forward:
+    description: "Flag weather to perform port forwarding as defined in the values file to local ports (default: false)"
+    required: false
+    default: "false"
+  kubeconfig:
+    description: "Kubeconfig file for remote cluster, if set, will be used instead of creating kind cluster"
+    required: false
+    default: ""
+  namespace:
+    description: "Namespace to deploy the helm chart to, if set, will be used instead of pre-set value"
+    required: false
+  version:
+    description: "Version of devnet chart (default: 0.1.4)"
+    required: false
+    default: "0.1.4"
+  repo:
+    description: "Helm repo to fetch the chart from (default: https://anmol1696.github.io/shuttle)"
+    required: false
+    default: "https://anmol1696.github.io/shuttle"
+runs:
+  using: composite
+  steps:
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get install -y make sed wget tar
+        wget https://github.com/mikefarah/yq/releases/download/${VERSION}/${BINARY}.tar.gz -O - | tar xz && mv ${BINARY} /usr/bin/yq
+      shell: bash
+
+    - name: Setup helm
+      uses: azure/setup-helm@v3
+      with:
+        version: v3.10.0
+
+    - name: Setup kubectl
+      uses: azure/setup-kubectl@v3
+
+    - name: Setup kind cluster
+      uses: helm/kind-action@v1.4.0
+      if: ${{ env.INPUT_KUBECONFIG != "" }}
+      with:
+        cluster_name: kind-shuttle
+
+    - name: Create kubeconfig file
+      if: ${{ inputs.kubeconfig != "" }}
+      run: |
+        mkdir -p ~/.kube
+        echo -e "$INPUT_KUBECONFIG" > ~/.kube/config
+      shell: bash
+
+    - name: Create values.yaml
+      run: |
+        if [[ $INPUT_VALUES == *.yaml || $INPUT_VALUES == *.yml ]]
+        then
+          cp $INPUT_VALUES custom-values.yaml
+        else
+          echo -e "$INPUT_VALUES" > custom-values.yaml
+        fi
+      shell: bash
+
+    - name: Setup shuttle helm repo
+      run: |
+        helm version
+        helm repo add shuttle $INPUT_REPO
+        helm repo update
+        helm search repo shuttle/devnet
+      shell: bash
+
+    - name: Helm install
+      run: |
+        helm install -f custom-values.yaml shuttle-devnet shuttle/devnet --wait --debug --version $INPUT_VERSION
+      shell: bash
+
+    - name: Port forward
+      if: ${{ inputs.port-forward == "true" }}
+      run: port_forward.sh
+      shell: bash
+      env:
+        VALUES_FILE: custom-values.yaml
