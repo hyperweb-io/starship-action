@@ -43,12 +43,12 @@ runs:
 
     - name: Setup kind cluster
       uses: helm/kind-action@v1.4.0
-      if: ${{ env.INPUT_KUBECONFIG != "" }}
+      if: ${{ inputs.kubeconfig != '' }}
       with:
         cluster_name: kind-shuttle
 
     - name: Create kubeconfig file
-      if: ${{ inputs.kubeconfig != "" }}
+      if: ${{ inputs.kubeconfig != '' }}
       run: |
         mkdir -p ~/.kube
         echo -e "$INPUT_KUBECONFIG" > ~/.kube/config
@@ -78,7 +78,7 @@ runs:
       shell: bash
 
     - name: Port forward
-      if: ${{ inputs.port-forward == "true" }}
+      if: ${{ inputs.port-forward == 'true' }}
       run: port_forward.sh
       shell: bash
       env:
