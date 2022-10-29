@@ -62,6 +62,7 @@ runs:
         else
           echo -e "$INPUT_VALUES" > custom-values.yaml
         fi
+        cat custom-values.yaml
       shell: bash
 
     - name: Setup shuttle helm repo
