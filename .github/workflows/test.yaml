@@ -84,13 +84,12 @@ jobs:
             kind: Config
             preferences: {}
 
-  - name: Setup kind cluster
+      - name: Setup kind cluster
         if: ${{ inputs.kubeconfig == '' }}
         uses: helm/kind-action@v1.4.0
         with:
           cluster_name: kind-shuttle
           config: /tmp/kubeconfig
-
 
       - name: Read kubeconfig
         id: kubeconfig
