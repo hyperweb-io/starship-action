@@ -22,7 +22,7 @@ For more information on inputs, see the [API Documentation](https://developer.gi
 - `repo`: Optional, Helm repo to fetch the chart from (default: https://anmol1696.github.io/shuttle)
 - `name`: Optional, Release name for the helm chart deployment (default: `shuttle-devnet`)
 
-### Example workflows
+### Example workflow
 
 Chreate a workflow (eg: `.github/workflows/create-osmosis-wasmd.yml`)
 ```yaml
