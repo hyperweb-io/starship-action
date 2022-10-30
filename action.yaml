@@ -23,6 +23,10 @@ inputs:
     description: "Helm repo to fetch the chart from (default: https://anmol1696.github.io/shuttle)"
     required: false
     default: "https://anmol1696.github.io/shuttle"
+  name:
+    description: "Helm chart release name for installing helm chart (default: shuttle-devnet)"
+    required: false
+    default: "shuttle-devnet"
 runs:
   using: composite
   steps:
@@ -59,11 +63,11 @@ runs:
       run: |
         if [[ "${{ inputs.values }}" == *.yaml || "${{ inputs.values }}" == *.yml ]]
         then
-          cp ${{ inputs.values }} custom-values.yaml
+          cp ${{ inputs.values }} ${{ inputs.name }}-values.yaml
         else
-          echo -e "${{ inputs.values }}" > custom-values.yaml
+          echo -e "${{ inputs.values }}" > ${{ inputs.name }}-values.yaml
         fi
-        cat custom-values.yaml
+        cat ${{ inputs.name }}-values.yaml
       shell: bash
 
     - name: Setup shuttle helm repo
@@ -76,7 +80,7 @@ runs:
 
     - name: Helm install
       run: |
-        helm install -f custom-values.yaml shuttle-devnet shuttle/devnet --wait --debug --version ${{ inputs.version }}
+        helm install -f ${{ inputs.name }}-values.yaml ${{ inputs.name }} shuttle/devnet --wait --debug --version ${{ inputs.version }}
       shell: bash
 
     - name: Port forward
@@ -84,4 +88,4 @@ runs:
       run: ${{ github.action_path }}/port_forward.sh
       shell: bash
       env:
-        VALUES_FILE: custom-values.yaml
+        VALUES_FILE: ${{ inputs.name }}-values.yaml
