@@ -44,7 +44,7 @@ runs:
 
     - name: Setup kind cluster
       uses: helm/kind-action@v1.4.0
-      if: ${{ inputs.kubeconfig != '' }}
+      if: ${{ inputs.kubeconfig == '' }}
       with:
         cluster_name: kind-shuttle
 
