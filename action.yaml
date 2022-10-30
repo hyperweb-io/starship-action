@@ -52,16 +52,16 @@ runs:
       if: ${{ inputs.kubeconfig != '' }}
       run: |
         mkdir -p ~/.kube
-        echo -e "$INPUT_KUBECONFIG" > ~/.kube/config
+        echo -e "${{ inputs.kubeconfig }}" > ~/.kube/config
       shell: bash
 
     - name: Create values.yaml
       run: |
-        if [[ $INPUT_VALUES == *.yaml || $INPUT_VALUES == *.yml ]]
+        if [[ ${{ inputs.values }} == *.yaml || ${{ inputs.values }} == *.yml ]]
         then
-          cp $INPUT_VALUES custom-values.yaml
+          cp ${{ inputs.values }} custom-values.yaml
         else
-          echo -e "$INPUT_VALUES" > custom-values.yaml
+          echo -e "${{ inputs.values }}" > custom-values.yaml
         fi
         cat custom-values.yaml
       shell: bash
@@ -69,14 +69,14 @@ runs:
     - name: Setup shuttle helm repo
       run: |
         helm version
-        helm repo add shuttle $INPUT_REPO
+        helm repo add shuttle ${{ inputs.repo }}
         helm repo update
         helm search repo shuttle/devnet
       shell: bash
 
     - name: Helm install
       run: |
-        helm install -f custom-values.yaml shuttle-devnet shuttle/devnet --wait --debug --version $INPUT_VERSION
+        helm install -f custom-values.yaml shuttle-devnet shuttle/devnet --wait --debug --version ${{ inputs.version }}
       shell: bash
 
     - name: Port forward
