@@ -23,6 +23,10 @@ inputs:
     description: "Helm repo to fetch the chart from (default: https://anmol1696.github.io/shuttle)"
     required: false
     default: "https://anmol1696.github.io/shuttle"
+  name:
+    description: "Helm chart release name for installing helm chart (default: shuttle-devnet)"
+    required: false
+    default: "shuttle-devnet"
 runs:
   using: composite
   steps:
@@ -30,7 +34,8 @@ runs:
     - name: Install dependencies
       run: |
         sudo apt-get install -y make sed wget tar
-        wget https://github.com/mikefarah/yq/releases/download/${VERSION}/${BINARY}.tar.gz -O - | tar xz && mv ${BINARY} /usr/bin/yq
+        sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
+        sudo chmod +x /usr/bin/yq
       shell: bash
 
     - name: Setup helm
@@ -42,44 +47,45 @@ runs:
       uses: azure/setup-kubectl@v3
 
     - name: Setup kind cluster
+      if: ${{ inputs.kubeconfig == '' }}
       uses: helm/kind-action@v1.4.0
-      if: ${{ env.INPUT_KUBECONFIG != "" }}
       with:
         cluster_name: kind-shuttle
 
     - name: Create kubeconfig file
-      if: ${{ inputs.kubeconfig != "" }}
+      if: ${{ inputs.kubeconfig != '' }}
       run: |
         mkdir -p ~/.kube
-        echo -e "$INPUT_KUBECONFIG" > ~/.kube/config
+        echo -e "${{ inputs.kubeconfig }}" > ~/.kube/config
       shell: bash
 
     - name: Create values.yaml
       run: |
-        if [[ $INPUT_VALUES == *.yaml || $INPUT_VALUES == *.yml ]]
+        if [[ "${{ inputs.values }}" == *.yaml || "${{ inputs.values }}" == *.yml ]]
         then
-          cp $INPUT_VALUES custom-values.yaml
+          cp ${{ inputs.values }} ${{ inputs.name }}-values.yaml
         else
-          echo -e "$INPUT_VALUES" > custom-values.yaml
+          echo -e "${{ inputs.values }}" > ${{ inputs.name }}-values.yaml
         fi
+        cat ${{ inputs.name }}-values.yaml
       shell: bash
 
     - name: Setup shuttle helm repo
       run: |
         helm version
-        helm repo add shuttle $INPUT_REPO
+        helm repo add shuttle ${{ inputs.repo }}
         helm repo update
         helm search repo shuttle/devnet
       shell: bash
 
     - name: Helm install
       run: |
-        helm install -f custom-values.yaml shuttle-devnet shuttle/devnet --wait --debug --version $INPUT_VERSION
+        helm install -f ${{ inputs.name }}-values.yaml ${{ inputs.name }} shuttle/devnet --wait --debug --version ${{ inputs.version }}
       shell: bash
 
     - name: Port forward
-      if: ${{ inputs.port-forward == "true" }}
-      run: port_forward.sh
+      if: ${{ inputs.port-forward == 'true' }}
+      run: ${{ github.action_path }}/port_forward.sh
       shell: bash
       env:
-        VALUES_FILE: custom-values.yaml
+        VALUES_FILE: ${{ inputs.name }}-values.yaml
