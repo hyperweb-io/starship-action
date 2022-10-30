@@ -57,15 +57,13 @@ jobs:
 
       - name: Check port forwarded status
         run: |
-          echo "Curl localhost"
-          curl http://localhost:26653/status
-          curl http://localhost:26659/status
-          echo "Try automated curl..."
           for port in 26659 26653; do
             status_code=$(curl --write-out %{http_code} --silent --output /dev/null http://localhost:$port/status)
             if [[ "$status_code" -ne 200 ]]; then
               echo "Expected status code: 200, got: $status_code, from http://localhost:$port/status"
               exit 1
+            else
+              echo "Successfully connected to: http://localhost:$port/status"
             fi
           done
         shell: bash
