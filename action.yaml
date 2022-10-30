@@ -43,8 +43,8 @@ runs:
       uses: azure/setup-kubectl@v3
 
     - name: Setup kind cluster
-      uses: helm/kind-action@v1.4.0
       if: ${{ inputs.kubeconfig == '' }}
+      uses: helm/kind-action@v1.4.0
       with:
         cluster_name: kind-shuttle
 
@@ -81,14 +81,7 @@ runs:
 
     - name: Port forward
       if: ${{ inputs.port-forward == 'true' }}
-      run: |
-        echo "pwd"
-        pwd ${{ github.action_path }}
-        echo Actions path: $GITHUB_ACTION_PATH
-        echo "ls"
-        ls $GITHUB_ACTION_PATH
-        echo "run script port forward"
-        ${{ github.action_path }}/port_forward.sh
+      run: ${{ github.action_path }}/port_forward.sh
       shell: bash
       env:
         VALUES_FILE: custom-values.yaml
