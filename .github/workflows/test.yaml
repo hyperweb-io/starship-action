@@ -28,11 +28,11 @@ jobs:
                 rpc: 26653
               resources:
                 limits:
-                  cpu: "0.5"
-                  memory: "1G"
-                requests:
                   cpu: "0.2"
-                  memory: "500M"
+                  memory: "200M"
+                requests:
+                  cpu: "0.1"
+                  memory: "100M"
             - name: wasmd
               type: wasmd
               numValidators: 1
@@ -41,11 +41,11 @@ jobs:
                 rest: 1319
               resources:
                 limits:
-                  cpu: "0.5"
-                  memory: "1G"
-                requests:
                   cpu: "0.2"
-                  memory: "500M"
+                  memory: "200M"
+                requests:
+                  cpu: "0.1"
+                  memory: "100M"
 
       - name: Check kubectl pods
         run: |
@@ -109,11 +109,11 @@ jobs:
                 rpc: 26653
               resources:
                 limits:
-                  cpu: "0.5"
-                  memory: "1G"
-                requests:
                   cpu: "0.2"
-                  memory: "500M"
+                  memory: "200M"
+                requests:
+                  cpu: "0.1"
+                  memory: "100M"
 
       - name: Check kubectl pods
         run: |
@@ -137,21 +137,21 @@ jobs:
               numValidators: 1
               resources:
                 limits:
-                  cpu: "0.5"
-                  memory: "1G"
-                requests:
                   cpu: "0.2"
-                  memory: "500M"
+                  memory: "200M"
+                requests:
+                  cpu: "0.1"
+                  memory: "100M"
             - name: wasmd
               type: wasmd
               numValidators: 1
               resources:
                 limits:
-                  cpu: "0.5"
-                  memory: "1G"
-                requests:
                   cpu: "0.2"
-                  memory: "500M"
+                  memory: "200M"
+                requests:
+                  cpu: "0.1"
+                  memory: "100M"
 
       - name: Check kubectl pods
         run: |
