@@ -76,9 +76,15 @@ jobs:
 
       - uses: actions/checkout@v2
 
-      - run: touch /tmp/kubeconfig
+      - run: echo -e "$TEMP_KUBECONFIG" > /tmp/kubeconfig
+        shell: bash
+        env:
+          TEMP_KUBECONFIG: |
+            apiVersion: v1
+            kind: Config
+            preferences: {}
 
-      - name: Setup kind cluster
+  - name: Setup kind cluster
         if: ${{ inputs.kubeconfig == '' }}
         uses: helm/kind-action@v1.4.0
         with:
