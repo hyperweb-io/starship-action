@@ -67,6 +67,11 @@ jobs:
           done
         shell: bash
 
+      - name: Delete helm chart
+        run: |
+          helm delete shuttle-devnet shuttle/devnet --wait --debug
+        shell: bash
+
   test-with-remote-cluster:
     runs-on: ubuntu-latest
     steps:
@@ -103,7 +108,7 @@ jobs:
             chains:
             - name: osmosis-1
               type: osmosis
-              numValidators: 2
+              numValidators: 1
               ports:
                 rest: 1313
                 rpc: 26653
@@ -118,7 +123,11 @@ jobs:
       - name: Check kubectl pods
         run: |
           kubectl get pods osmosis-1-genesis-0
-          kubectl get pods osmosis-1-validator-0
+        shell: bash
+
+      - name: Delete helm chart
+        run: |
+          helm delete shuttle-devnet shuttle/devnet --wait --debug
         shell: bash
 
   test-with-no-portforward:
@@ -142,20 +151,15 @@ jobs:
                 requests:
                   cpu: "0.1"
                   memory: "100M"
-            - name: wasmd
-              type: wasmd
-              numValidators: 1
-              resources:
-                limits:
-                  cpu: "0.2"
-                  memory: "200M"
-                requests:
-                  cpu: "0.1"
-                  memory: "100M"
 
       - name: Check kubectl pods
         run: |
-          for chain in wasmd osmosis-1; do
+          for chain in osmosis-1; do
             kubectl get pods $chain-genesis-0
           done
+        shell: bash
+
+      - name: Delete helm chart
+        run: |
+          helm delete shuttle-devnet shuttle/devnet --wait --debug
         shell: bash
