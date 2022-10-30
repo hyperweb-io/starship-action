@@ -12,9 +12,6 @@ inputs:
     description: "Kubeconfig file for remote cluster, if set, will be used instead of creating kind cluster"
     required: false
     default: ""
-  namespace:
-    description: "Namespace to deploy the helm chart to, if set, will be used instead of pre-set value"
-    required: false
   version:
     description: "Version of devnet chart (default: 0.1.4)"
     required: false
