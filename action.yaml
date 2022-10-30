@@ -57,7 +57,7 @@ runs:
 
     - name: Create values.yaml
       run: |
-        if [[ ${{ inputs.values }} == *.yaml || ${{ inputs.values }} == *.yml ]]
+        if [[ "${{ inputs.values }}" == *.yaml || "${{ inputs.values }}" == *.yml ]]
         then
           cp ${{ inputs.values }} custom-values.yaml
         else
