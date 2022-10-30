@@ -89,7 +89,8 @@ jobs:
         uses: helm/kind-action@v1.4.0
         with:
           cluster_name: kind-shuttle
-          config: /tmp/kubeconfig
+        env:
+          KUBECONFIG: /tmp/kubeconfig
 
       - name: Read kubeconfig
         id: kubeconfig
