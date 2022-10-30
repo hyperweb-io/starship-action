@@ -81,7 +81,14 @@ runs:
 
     - name: Port forward
       if: ${{ inputs.port-forward == 'true' }}
-      run: ${{ github.action_path }}/port_forward.sh
+      run: |
+        echo "pwd"
+        pwd ${{ github.action_path }}
+        echo Actions path: $GITHUB_ACTION_PATH
+        echo "ls"
+        ls $GITHUB_ACTION_PATH
+        echo "run script port forward"
+        ${{ github.action_path }}/port_forward.sh
       shell: bash
       env:
         VALUES_FILE: custom-values.yaml
