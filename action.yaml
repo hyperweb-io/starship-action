@@ -1,5 +1,8 @@
 name: "Shuttle Devnet"
 description: "Run mini cosmos ecosystem via devnet"
+branding:
+  color: blue
+  icon: anchor
 inputs:
   values:
     description: "Values yaml raw data of filename for helm that define the topology for the devnet"
