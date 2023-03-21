@@ -1,4 +1,4 @@
-name: "Shuttle Devnet"
+name: "Starship Devnet"
 description: "Run mini cosmos ecosystem via devnet"
 branding:
   color: blue
@@ -18,15 +18,15 @@ inputs:
   version:
     description: "Version of devnet chart (default: 0.1.4)"
     required: false
-    default: "0.1.4"
+    default: "0.1.18"
   repo:
-    description: "Helm repo to fetch the chart from (default: https://anmol1696.github.io/shuttle)"
+    description: "Helm repo to fetch the chart from (default: https://anmol1696.github.io/starship)"
     required: false
-    default: "https://anmol1696.github.io/shuttle"
+    default: "https://anmol1696.github.io/starship"
   name:
-    description: "Helm chart release name for installing helm chart (default: shuttle-devnet)"
+    description: "Helm chart release name for installing helm chart (default: starship-devnet)"
     required: false
-    default: "shuttle-devnet"
+    default: "starship-devnet"
 runs:
   using: composite
   steps:
@@ -50,7 +50,7 @@ runs:
       if: ${{ inputs.kubeconfig == '' }}
       uses: helm/kind-action@v1.4.0
       with:
-        cluster_name: kind-shuttle
+        cluster_name: kind-starship
 
     - name: Create kubeconfig file
       if: ${{ inputs.kubeconfig != '' }}
@@ -70,17 +70,17 @@ runs:
         cat ${{ inputs.name }}-values.yaml
       shell: bash
 
-    - name: Setup shuttle helm repo
+    - name: Setup starship helm repo
       run: |
         helm version
-        helm repo add shuttle ${{ inputs.repo }}
+        helm repo add starship ${{ inputs.repo }}
         helm repo update
-        helm search repo shuttle/devnet
+        helm search repo starship/devnet
       shell: bash
 
     - name: Helm install
       run: |
-        helm install -f ${{ inputs.name }}-values.yaml ${{ inputs.name }} shuttle/devnet --wait --debug --version ${{ inputs.version }}
+        helm install -f ${{ inputs.name }}-values.yaml ${{ inputs.name }} starship/devnet --wait --debug --version ${{ inputs.version }}
       shell: bash
 
     - name: Port forward
