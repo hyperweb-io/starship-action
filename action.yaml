@@ -18,7 +18,7 @@ inputs:
   version:
     description: "Version of devnet chart (default: 0.1.4)"
     required: false
-    default: "0.1.18"
+    default: "0.1.21"
   repo:
     description: "Helm repo to fetch the chart from (default: https://cosmology-tech.github.io/starship)"
     required: false
