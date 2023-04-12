@@ -1,8 +1,8 @@
 # Starship Action
 
-[![](https://github.com/Anmol1696/starship-action/workflows/Test/badge.svg?branch=main)](https://github.com/Anmol1696/starship-action/actions)
+[![](https://github.com/cosmology-tech/starship-action/workflows/Test/badge.svg?branch=main)](https://github.com/cosmology-tech/starship-action/actions)
 
-GitHub Action for creating and running [starship devnets](https://github.com/Anmol1696/starship) in CI.
+GitHub Action for creating and running [starship devnets](https://github.com/cosmology-tech/starship) in CI.
 
 ## Usage
 
@@ -19,7 +19,7 @@ For more information on inputs, see the [API Documentation](https://developer.gi
 - `port-forward`: Optional, toggle to perform local port-forwarding, based on the `values.yaml` (default: `false`)
 - `kubeconfig`: Optional, Kubeconfig for remote cluster, if set, will be used instead of creating local kind cluster
 - `version`: Optional, version of devnet chart from starship (default: `0.1.4`)
-- `repo`: Optional, Helm repo to fetch the chart from (default: https://anmol1696.github.io/starship)
+- `repo`: Optional, Helm repo to fetch the chart from (default: https://cosmology-tech.github.io/starship)
 - `name`: Optional, Release name for the helm chart deployment (default: `starship-devnet`)
 
 ### Example workflow
@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create starship devnet for osmos and wasm
-        uses: Anmol1696/starship-action@v1
+        uses: cosmology-tech/starship-action@v1
         with:
           values: |
             chains:
