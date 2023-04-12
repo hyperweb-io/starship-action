@@ -7,7 +7,7 @@ set -o pipefail
 num_chains=$(yq -r ".chains | length" $VALUES_FILE)
 
 function stop_port_forward() {
-  color 33 "Trying to stop all port-forward, if any...."
+  echo "Trying to stop all port-forward, if any...."
   PIDS=$(ps -ef | grep -i -e 'kubectl port-forward' | grep -v 'grep' | cat | awk '{print $2}') || true
   for p in $PIDS; do
     kill -15 $p
@@ -40,6 +40,7 @@ for i in $(seq 0 $num_chains); do
   [[ "$locallcd" != "null" ]] && kubectl port-forward pods/$chain-genesis-0 $locallcd:$CHAIN_LCD_PORT > /dev/null 2>&1 &
   [[ "$localexp" != "null" ]] && kubectl port-forward pods/$chain-genesis-0 $localexp:$CHAIN_EXPOSER_PORT > /dev/null 2>&1 &
   sleep 1
+  echo "chains: forwarded $chain lcd to http://localhost:$locallcd, rpc to http://localhost:$localrpc"
 done
 
 echo "Port forward services"
@@ -49,10 +50,12 @@ then
   kubectl port-forward service/registry 8081:$REGISTRY_LCD_PORT > /dev/null 2>&1 &
   kubectl port-forward service/registry 9091:$REGISTRY_GRPC_PORT > /dev/null 2>&1 &
   sleep 1
+  echo "registry: forwarded registry lcd to grpc http://localhost:8081, to http://localhost:9091"
 fi
 
 if [[ $(yq -r ".explorer.enabled" $VALUES_FILE) == "true" ]];
 then
   kubectl port-forward service/explorer 8080:$EXPLORER_LCD_PORT > /dev/null 2>&1 &
   sleep 1
+  echo "Open the explorer to get started.... http://localhost:8080"
 fi
