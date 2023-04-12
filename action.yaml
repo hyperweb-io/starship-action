@@ -20,9 +20,9 @@ inputs:
     required: false
     default: "0.1.18"
   repo:
-    description: "Helm repo to fetch the chart from (default: https://anmol1696.github.io/starship)"
+    description: "Helm repo to fetch the chart from (default: https://cosmology-tech.github.io/starship)"
     required: false
-    default: "https://anmol1696.github.io/starship"
+    default: "https://cosmology-tech.github.io/starship"
   name:
     description: "Helm chart release name for installing helm chart (default: starship-devnet)"
     required: false
