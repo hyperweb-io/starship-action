@@ -80,7 +80,7 @@ runs:
 
     - name: Helm install
       run: |
-        helm install -f ${{ inputs.name }}-values.yaml ${{ inputs.name }} starship/devnet --wait --debug --version ${{ inputs.version }}
+        helm install -f ${{ inputs.name }}-values.yaml ${{ inputs.name }} starship/devnet --wait --debug --version ${{ inputs.version }} --timeout 30m0s
       shell: bash
 
     - name: Port forward
