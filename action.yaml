@@ -8,17 +8,21 @@ inputs:
     description: "Values yaml raw data of filename for helm that define the topology for the devnet"
     required: true
   port-forward:
-    description: "Flag weather to perform port forwarding as defined in the values file to local ports (default: false)"
+    description: "Flag weather to perform port forwarding as defined in the values file to local ports (default: true)"
     required: false
-    default: "false"
+    default: "true"
   kubeconfig:
     description: "Kubeconfig file for remote cluster, if set, will be used instead of creating kind cluster"
     required: false
     default: ""
   version:
-    description: "Version of devnet chart (default: 0.1.4)"
+    description: "Version of devnet chart (default: 0.1.21)"
     required: false
     default: "0.1.21"
+  chart:
+    description: "Name of  the help chart to use. Recommended: use default (default: starship/devnet)"
+    required: false
+    default: "starship/devnet"
   repo:
     description: "Helm repo to fetch the chart from (default: https://cosmology-tech.github.io/starship)"
     required: false
@@ -80,7 +84,7 @@ runs:
 
     - name: Helm install
       run: |
-        helm install -f ${{ inputs.name }}-values.yaml ${{ inputs.name }} starship/devnet --wait --debug --version ${{ inputs.version }}
+        helm install -f ${{ inputs.name }}-values.yaml ${{ inputs.name }} ${{ inputs.chart }} --wait --debug --version ${{ inputs.version }} --timeout 30m0s
       shell: bash
 
     - name: Port forward
