@@ -59,9 +59,6 @@ jobs:
           for chain in wasmd osmosis-1; do
             kubectl get pods $chain-genesis-0 --namespace $NAMESPACE
           done
-        shell: bash
-        env:
-          NAMESPACE: ${{ env.NAMESPACE }}
 
       - name: Check port forwarded status
         run: |
@@ -74,16 +71,10 @@ jobs:
               echo "Successfully connected to: http://localhost:$port/status"
             fi
           done
-        shell: bash
-        env:
-          NAMESPACE: ${{ env.NAMESPACE }}
 
       - name: Delete helm chart
         run: |
           helm delete test-with-values --debug --namespace ${{ env.NAMESPACE }}
-        shell: bash
-        env:
-          NAMESPACE: ${{ env.NAMESPACE }}
 
   test-with-remote-cluster:
     runs-on: ubuntu-latest
@@ -139,16 +130,10 @@ jobs:
           echo "namespace here.... $NAMESPACE and also ${{ env.NAMESPACE }}"
           echo testing $NAMESPACE
           kubectl get pods osmosis-1-genesis-0 --namespace ${{ env.NAMESPACE }}
-        shell: bash
-        env:
-          NAMESPACE: ${{ env.NAMESPACE }}
 
       - name: Delete helm chart
         run: |
           helm delete test-kubeconfig --debug --namespace ${{ env.NAMESPACE }}
-        shell: bash
-        env:
-          NAMESPACE: ${{ env.NAMESPACE }}
 
   test-with-no-portforward:
     runs-on: ubuntu-latest
@@ -180,11 +165,7 @@ jobs:
           for chain in osmosis-1; do
             kubectl get pods $chain-genesis-0 --namespace ${{ env.NAMESPACE }}
           done
-        shell: bash
-        env:
-          NAMESPACE: ${{ env.NAMESPACE }}
 
       - name: Delete helm chart
         run: |
           helm delete test-no-portforward --debug --namespace ${{ env.NAMESPACE }}
-        shell: bash
