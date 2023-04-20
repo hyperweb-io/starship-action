@@ -8,9 +8,13 @@ on:
     branches:
       - main
 
+env:
+  NAMESPACE: "starship"
+
 jobs:
   test-with-values:
     runs-on: ubuntu-latest
+
     steps:
 
       - uses: actions/checkout@v2
@@ -51,9 +55,8 @@ jobs:
       - name: Check kubectl pods
         run: |
           for chain in wasmd osmosis-1; do
-            kubectl get pods $chain-genesis-0
+            kubectl get pods $chain-genesis-0 --namespace $NAMESPACE
           done
-        shell: bash
 
       - name: Check port forwarded status
         run: |
@@ -66,12 +69,10 @@ jobs:
               echo "Successfully connected to: http://localhost:$port/status"
             fi
           done
-        shell: bash
 
       - name: Delete helm chart
         run: |
-          helm delete test-with-values --debug
-        shell: bash
+          helm delete test-with-values --debug --namespace ${{ env.NAMESPACE }}
 
   test-with-remote-cluster:
     runs-on: ubuntu-latest
@@ -124,13 +125,11 @@ jobs:
 
       - name: Check kubectl pods
         run: |
-          kubectl get pods osmosis-1-genesis-0
-        shell: bash
+          kubectl get pods osmosis-1-genesis-0 --namespace ${{ env.NAMESPACE }}
 
       - name: Delete helm chart
         run: |
-          helm delete test-kubeconfig --debug
-        shell: bash
+          helm delete test-kubeconfig --debug --namespace ${{ env.NAMESPACE }}
 
   test-with-no-portforward:
     runs-on: ubuntu-latest
@@ -158,11 +157,9 @@ jobs:
       - name: Check kubectl pods
         run: |
           for chain in osmosis-1; do
-            kubectl get pods $chain-genesis-0
+            kubectl get pods $chain-genesis-0 --namespace ${{ env.NAMESPACE }}
           done
-        shell: bash
 
       - name: Delete helm chart
         run: |
-          helm delete test-no-portforward --debug
-        shell: bash
+          helm delete test-no-portforward --debug --namespace ${{ env.NAMESPACE }}

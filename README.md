@@ -21,6 +21,8 @@ For more information on inputs, see the [API Documentation](https://developer.gi
 - `version`: Optional, version of devnet chart from starship (default: `0.1.4`)
 - `repo`: Optional, Helm repo to fetch the chart from (default: https://cosmology-tech.github.io/starship)
 - `name`: Optional, Release name for the helm chart deployment (default: `starship-devnet`)
+- `namespace`: Optional, Kubernetes namespace to which helm charts will be deployed. If not found, namespace will be created. (default: `starship`)
+- `chart`: Optional, Name of  the help chart to use. Recommended: use default (default: `starship/devnet`)
 
 ### Example workflow
 
