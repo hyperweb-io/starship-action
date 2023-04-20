@@ -86,6 +86,11 @@ runs:
         helm search repo starship/devnet
       shell: bash
 
+    - name: Helm delete before install
+      run: |
+        helm delete ${{ inputs.name }} --debug --namespace ${{ inputs.namespace }} --wait || true
+      shell: bash
+
     - name: Helm install
       run: |
         helm install -f ${{ inputs.name }}-values.yaml ${{ inputs.name }} ${{ inputs.chart }} --wait --debug --version ${{ inputs.version }} --timeout 30m0s --namespace ${{ inputs.namespace }} --create-namespace
