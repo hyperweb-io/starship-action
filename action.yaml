@@ -15,10 +15,14 @@ inputs:
     description: "Kubeconfig file for remote cluster, if set, will be used instead of creating kind cluster"
     required: false
     default: ""
-  version:
-    description: "Version of devnet chart (default: 0.1.21)"
+  namespace:
+    description: "Kubernetes namespace to which helm charts will be deployed. If not found, namespace will be created. (default: starship)"
     required: false
-    default: "0.1.21"
+    default: "starship"
+  version:
+    description: "Version of devnet chart (default: 0.1.22)"
+    required: false
+    default: "0.1.22"
   chart:
     description: "Name of  the help chart to use. Recommended: use default (default: starship/devnet)"
     required: false
@@ -84,7 +88,7 @@ runs:
 
     - name: Helm install
       run: |
-        helm install -f ${{ inputs.name }}-values.yaml ${{ inputs.name }} ${{ inputs.chart }} --wait --debug --version ${{ inputs.version }} --timeout 30m0s
+        helm install -f ${{ inputs.name }}-values.yaml ${{ inputs.name }} ${{ inputs.chart }} --wait --debug --version ${{ inputs.version }} --timeout 30m0s --namespace ${{ inputs.namespace }} --create-namespace
       shell: bash
 
     - name: Port forward
