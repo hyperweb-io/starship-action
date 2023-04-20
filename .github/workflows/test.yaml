@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      NAMESPACE: starship
+      NAMESPACE: "starship"
 
     steps:
 
@@ -54,8 +54,10 @@ jobs:
 
       - name: Check kubectl pods
         run: |
+          echo "namespace here.... $NAMESPACE and also ${{ env.NAMESPACE }}"
+          echo testing $NAMESPACE
           for chain in wasmd osmosis-1; do
-            kubectl get pods $chain-genesis-0 --namespace ${{ env.NAMESPACE }}
+            kubectl get pods $chain-genesis-0 --namespace $NAMESPACE
           done
         shell: bash
 
@@ -128,6 +130,8 @@ jobs:
 
       - name: Check kubectl pods
         run: |
+          echo "namespace here.... $NAMESPACE and also ${{ env.NAMESPACE }}"
+          echo testing $NAMESPACE
           kubectl get pods osmosis-1-genesis-0 --namespace ${{ env.NAMESPACE }}
         shell: bash
 
@@ -161,6 +165,8 @@ jobs:
 
       - name: Check kubectl pods
         run: |
+          echo "namespace here.... $NAMESPACE and also ${{ env.NAMESPACE }}"
+          echo testing $NAMESPACE
           for chain in osmosis-1; do
             kubectl get pods $chain-genesis-0 --namespace ${{ env.NAMESPACE }}
           done
