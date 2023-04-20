@@ -97,3 +97,4 @@ runs:
       shell: bash
       env:
         VALUES_FILE: ${{ inputs.name }}-values.yaml
+        NAMESPACE: ${{ inputs.namespace }}
