@@ -8,12 +8,12 @@ on:
     branches:
       - main
 
+env:
+  NAMESPACE: "starship"
+
 jobs:
   test-with-values:
     runs-on: ubuntu-latest
-
-    env:
-      NAMESPACE: "starship"
 
     steps:
 
