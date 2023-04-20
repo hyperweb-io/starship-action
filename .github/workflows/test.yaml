@@ -55,7 +55,7 @@ jobs:
       - name: Check kubectl pods
         run: |
           for chain in wasmd osmosis-1; do
-            kubectl get pods $chain-genesis-0 --namespace $NAMESPACE
+            kubectl get pods $chain-genesis-0 --namespace ${{ env.NAMESPACE }}
           done
         shell: bash
 
@@ -74,7 +74,7 @@ jobs:
 
       - name: Delete helm chart
         run: |
-          helm delete test-with-values --debug --namespace $NAMESPACE
+          helm delete test-with-values --debug --namespace ${{ env.NAMESPACE }}
         shell: bash
 
   test-with-remote-cluster:
@@ -128,12 +128,12 @@ jobs:
 
       - name: Check kubectl pods
         run: |
-          kubectl get pods osmosis-1-genesis-0 --namespace $NAMESPACE
+          kubectl get pods osmosis-1-genesis-0 --namespace ${{ env.NAMESPACE }}
         shell: bash
 
       - name: Delete helm chart
         run: |
-          helm delete test-kubeconfig --debug --namespace $NAMESPACE
+          helm delete test-kubeconfig --debug --namespace ${{ env.NAMESPACE }}
         shell: bash
 
   test-with-no-portforward:
@@ -162,11 +162,11 @@ jobs:
       - name: Check kubectl pods
         run: |
           for chain in osmosis-1; do
-            kubectl get pods $chain-genesis-0 --namespace $NAMESPACE
+            kubectl get pods $chain-genesis-0 --namespace ${{ env.NAMESPACE }}
           done
         shell: bash
 
       - name: Delete helm chart
         run: |
-          helm delete test-no-portforward --debug --namespace $NAMESPACE
+          helm delete test-no-portforward --debug --namespace ${{ env.NAMESPACE }}
         shell: bash
