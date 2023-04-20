@@ -11,6 +11,10 @@ on:
 jobs:
   test-with-values:
     runs-on: ubuntu-latest
+
+    env:
+      NAMESPACE: starship
+
     steps:
 
       - uses: actions/checkout@v2
@@ -51,7 +55,7 @@ jobs:
       - name: Check kubectl pods
         run: |
           for chain in wasmd osmosis-1; do
-            kubectl get pods $chain-genesis-0
+            kubectl get pods $chain-genesis-0 --namespace $NAMESPACE
           done
         shell: bash
 
@@ -70,7 +74,7 @@ jobs:
 
       - name: Delete helm chart
         run: |
-          helm delete test-with-values --debug
+          helm delete test-with-values --debug --namespace $NAMESPACE
         shell: bash
 
   test-with-remote-cluster:
@@ -124,12 +128,12 @@ jobs:
 
       - name: Check kubectl pods
         run: |
-          kubectl get pods osmosis-1-genesis-0
+          kubectl get pods osmosis-1-genesis-0 --namespace $NAMESPACE
         shell: bash
 
       - name: Delete helm chart
         run: |
-          helm delete test-kubeconfig --debug
+          helm delete test-kubeconfig --debug --namespace $NAMESPACE
         shell: bash
 
   test-with-no-portforward:
@@ -158,11 +162,11 @@ jobs:
       - name: Check kubectl pods
         run: |
           for chain in osmosis-1; do
-            kubectl get pods $chain-genesis-0
+            kubectl get pods $chain-genesis-0 --namespace $NAMESPACE
           done
         shell: bash
 
       - name: Delete helm chart
         run: |
-          helm delete test-no-portforward --debug
+          helm delete test-no-portforward --debug --namespace $NAMESPACE
         shell: bash
