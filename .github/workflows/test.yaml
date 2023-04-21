@@ -107,6 +107,7 @@ jobs:
           path: /tmp/kubeconfig
 
       - uses: ./
+        id: starship
         with:
           port-forward: true
           name: test-kubeconfig
@@ -148,6 +149,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - uses: ./
+        id: starship
         with:
           port-forward: false
           name: test-no-portforward
