@@ -3,6 +3,7 @@ description: "Run mini cosmos ecosystem via devnet"
 branding:
   color: blue
   icon: anchor
+
 inputs:
   values:
     description: "Values yaml raw data of filename for helm that define the topology for the devnet"
@@ -15,10 +16,6 @@ inputs:
     description: "Kubeconfig file for remote cluster, if set, will be used instead of creating kind cluster"
     required: false
     default: ""
-  namespace:
-    description: "Kubernetes namespace to which helm charts will be deployed. If not found, namespace will be created. (default: starship)"
-    required: false
-    default: "starship"
   version:
     description: "Version of devnet chart (default: 0.1.22)"
     required: false
@@ -35,6 +32,15 @@ inputs:
     description: "Helm chart release name for installing helm chart (default: starship-devnet)"
     required: false
     default: "starship-devnet"
+
+outputs:
+  namespace:
+    description: "Kubernetes namespace to which helm charts were deployed"
+    value: ${{ steps.set-namespace.outputs.namespace }}
+  name:
+    description: "Helm chart release name for installing helm chart"
+    value: ${{ inputs.name }}
+
 runs:
   using: composite
   steps:
@@ -78,6 +84,17 @@ runs:
         cat ${{ inputs.name }}-values.yaml
       shell: bash
 
+    - name: Set namespace
+      id: set-namespace
+      run: |
+        namespace="ci-${{ github.repository }}-${{ github.workflow }}-${{ github.ref }}"
+        namespace="${namespace// /-}"
+        namespace="${namespace//\//-}"
+        namespace=$(awk '{print tolower($0)}' <<< $namespace)
+        echo "Setting namespace to $namespace"
+        echo "namespace=$namespace" >> $GITHUB_OUTPUT
+      shell: bash
+
     - name: Setup starship helm repo
       run: |
         helm version
@@ -88,12 +105,12 @@ runs:
 
     - name: Helm delete before install
       run: |
-        helm delete ${{ inputs.name }} --debug --namespace ${{ inputs.namespace }} --wait || true
+        helm delete ${{ inputs.name }} --debug --namespace ${{ steps.set-namespace.outputs.namespace }} --wait || true
       shell: bash
 
     - name: Helm install
       run: |
-        helm install -f ${{ inputs.name }}-values.yaml ${{ inputs.name }} ${{ inputs.chart }} --wait --debug --version ${{ inputs.version }} --timeout 30m0s --namespace ${{ inputs.namespace }} --create-namespace
+        helm install -f ${{ inputs.name }}-values.yaml ${{ inputs.name }} ${{ inputs.chart }} --wait --debug --version ${{ inputs.version }} --timeout 30m0s --namespace ${{ steps.set-namespace.outputs.namespace }} --create-namespace
       shell: bash
 
     - name: Port forward
@@ -102,4 +119,4 @@ runs:
       shell: bash
       env:
         VALUES_FILE: ${{ inputs.name }}-values.yaml
-        NAMESPACE: ${{ inputs.namespace }}
+        NAMESPACE: ${{ steps.set-namespace.outputs.namespace }}
