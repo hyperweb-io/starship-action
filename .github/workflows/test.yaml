@@ -8,9 +8,6 @@ on:
     branches:
       - main
 
-env:
-  NAMESPACE: "starship"
-
 jobs:
   test-with-values:
     runs-on: ubuntu-latest
@@ -20,6 +17,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - uses: ./
+        id: starship
         with:
           port-forward: true
           name: test-with-values
@@ -57,6 +55,8 @@ jobs:
           for chain in wasmd osmosis-1; do
             kubectl get pods $chain-genesis-0 --namespace $NAMESPACE
           done
+        env:
+          NAMESPACE: ${{ steps.starship.outputs.namespace }}
 
       - name: Check port forwarded status
         run: |
@@ -70,9 +70,13 @@ jobs:
             fi
           done
 
-      - name: Delete helm chart
+      - name: Cleanup cluster
         run: |
-          helm delete test-with-values --debug --namespace ${{ env.NAMESPACE }}
+          helm delete $NAME --debug --namespace $NAMESPACE --wait
+          kubectl delete namespace $NAMESPACE --wait=true
+        env:
+          NAMESPACE: ${{ steps.starship.outputs.namespace }}
+          NAME: ${{ steps.starship.outputs.name }}
 
   test-with-remote-cluster:
     runs-on: ubuntu-latest
@@ -125,11 +129,17 @@ jobs:
 
       - name: Check kubectl pods
         run: |
-          kubectl get pods osmosis-1-genesis-0 --namespace ${{ env.NAMESPACE }}
+          kubectl get pods osmosis-1-genesis-0 --namespace $NAMESPACE
+        env:
+          NAMESPACE: ${{ steps.starship.outputs.namespace }}
 
-      - name: Delete helm chart
+      - name: Cleanup cluster
         run: |
-          helm delete test-kubeconfig --debug --namespace ${{ env.NAMESPACE }}
+          helm delete $NAME --debug --namespace $NAMESPACE --wait
+          kubectl delete namespace $NAMESPACE --wait=true
+        env:
+          NAMESPACE: ${{ steps.starship.outputs.namespace }}
+          NAME: ${{ steps.starship.outputs.name }}
 
   test-with-no-portforward:
     runs-on: ubuntu-latest
@@ -157,9 +167,16 @@ jobs:
       - name: Check kubectl pods
         run: |
           for chain in osmosis-1; do
-            kubectl get pods $chain-genesis-0 --namespace ${{ env.NAMESPACE }}
+            kubectl get pods $chain-genesis-0 --namespace $NAMESPACE
           done
+        env:
+          NAMESPACE: ${{ steps.starship.outputs.namespace }}
 
-      - name: Delete helm chart
+
+      - name: Cleanup cluster
         run: |
-          helm delete test-no-portforward --debug --namespace ${{ env.NAMESPACE }}
+          helm delete $NAME --debug --namespace $NAMESPACE --wait
+          kubectl delete namespace $NAMESPACE --wait=true
+        env:
+          NAMESPACE: ${{ steps.starship.outputs.namespace }}
+          NAME: ${{ steps.starship.outputs.name }}
