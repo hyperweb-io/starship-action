@@ -32,6 +32,10 @@ inputs:
     description: "Helm chart release name for installing helm chart (default: starship-devnet)"
     required: false
     default: "starship-devnet"
+  namespace:
+    description: "Kubernetes namespace to deploy helm charts on (default: ci-{github.repository}-{github.workflow}-{github.ref} )"
+    required: false
+    default: ""
 
 outputs:
   namespace:
@@ -88,12 +92,17 @@ runs:
       id: set-namespace
       run: |
         namespace="ci-${{ github.repository }}-${{ github.workflow }}-${{ github.ref }}"
+        if [ -n "$INPUT_NAMESPACE" ]; then
+          namespace="$INPUT_NAMESPACE"
+        fi
         namespace="${namespace// /-}"
         namespace="${namespace//\//-}"
         namespace=$(awk '{print tolower($0)}' <<< $namespace)
         echo "Setting namespace to $namespace"
         echo "namespace=$namespace" >> $GITHUB_OUTPUT
       shell: bash
+      env:
+        INPUT_NAMESPACE: ${{ inputs.namespace }}
 
     - name: Setup starship helm repo
       run: |
