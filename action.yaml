@@ -33,7 +33,7 @@ inputs:
     required: false
     default: "starship-devnet"
   namespace:
-    description: "Kubernetes namespace to deploy helm charts on (default: ci-${{ github.repository }}-${{ github.workflow }}-${{ github.ref }} )"
+    description: "Kubernetes namespace to deploy helm charts on (default: ci-{github.repository}-{github.workflow}-{github.ref} )"
     required: false
     default: ""
 
