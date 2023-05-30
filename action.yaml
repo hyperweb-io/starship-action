@@ -17,17 +17,17 @@ inputs:
     required: false
     default: ""
   version:
-    description: "Version of devnet chart (default: 0.1.22)"
+    description: "Version of devnet chart (default: 0.1.26)"
     required: false
-    default: "0.1.22"
+    default: "0.1.26"
   chart:
     description: "Name of  the help chart to use. Recommended: use default (default: starship/devnet)"
     required: false
     default: "starship/devnet"
   repo:
-    description: "Helm repo to fetch the chart from (default: https://cosmology-tech.github.io/starship)"
+    description: "Helm repo to fetch the chart from (default: https://thestarship.io)"
     required: false
-    default: "https://cosmology-tech.github.io/starship"
+    default: "https://thestarship.io"
   name:
     description: "Helm chart release name for installing helm chart (default: starship-devnet)"
     required: false
@@ -98,6 +98,8 @@ runs:
         namespace="${namespace// /-}"
         namespace="${namespace//\//-}"
         namespace=$(awk '{print tolower($0)}' <<< $namespace)
+        (( ${#namespace} > 62 )) && namespace="$(echo $namespace | cut -c1-59)$((RANDOM%1000))"
+        namespace=$(echo $namespace | cut -c1-60)
         echo "Setting namespace to $namespace"
         echo "namespace=$namespace" >> $GITHUB_OUTPUT
       shell: bash
