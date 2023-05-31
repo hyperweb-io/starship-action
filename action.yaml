@@ -17,9 +17,9 @@ inputs:
     required: false
     default: ""
   version:
-    description: "Version of devnet chart (default: 0.1.27)"
+    description: "Version of devnet chart (default: 0.1.30)"
     required: false
-    default: "0.1.27"
+    default: "0.1.30"
   chart:
     description: "Name of  the help chart to use. Recommended: use default (default: starship/devnet)"
     required: false
