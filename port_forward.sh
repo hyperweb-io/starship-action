@@ -58,10 +58,10 @@ for i in $(seq 0 $num_chains); do
   locallcd=$(yq -r ".chains[$i].ports.rest" ${CONFIGFILE} )
   localexp=$(yq -r ".chains[$i].ports.exposer" ${CONFIGFILE})
   localfaucet=$(yq -r ".chains[$i].ports.faucet" ${CONFIGFILE})
-  [[ "$localrpc" != "null" ]] && kubectl port-forward pods/$chain-genesis-0 $localrpc:$CHAIN_RPC_PORT > /dev/null 2>&1 &
-  [[ "$locallcd" != "null" ]] && kubectl port-forward pods/$chain-genesis-0 $locallcd:$CHAIN_LCD_PORT > /dev/null 2>&1 &
-  [[ "$localexp" != "null" ]] && kubectl port-forward pods/$chain-genesis-0 $localexp:$CHAIN_EXPOSER_PORT > /dev/null 2>&1 &
-  [[ "$localfaucet" != "null" ]] && kubectl port-forward pods/$chain-genesis-0 $localfaucet:$CHAIN_FAUCET_PORT > /dev/null 2>&1 &
+  [[ "$localrpc" != "null" ]] && kubectl port-forward --namespace $NAMESPACE pods/$chain-genesis-0 $localrpc:$CHAIN_RPC_PORT > /dev/null 2>&1 &
+  [[ "$locallcd" != "null" ]] && kubectl port-forward --namespace $NAMESPACE pods/$chain-genesis-0 $locallcd:$CHAIN_LCD_PORT > /dev/null 2>&1 &
+  [[ "$localexp" != "null" ]] && kubectl port-forward --namespace $NAMESPACE pods/$chain-genesis-0 $localexp:$CHAIN_EXPOSER_PORT > /dev/null 2>&1 &
+  [[ "$localfaucet" != "null" ]] && kubectl port-forward --namespace $NAMESPACE pods/$chain-genesis-0 $localfaucet:$CHAIN_FAUCET_PORT > /dev/null 2>&1 &
   sleep 1
   color yellow "chains: forwarded $chain lcd to http://localhost:$locallcd, rpc to http://localhost:$localrpc, faucet to http://localhost:$localfaucet"
 done
@@ -70,15 +70,15 @@ echo "Port forward services"
 
 if [[ $(yq -r ".registry.enabled" $CONFIGFILE) == "true" ]];
 then
-  kubectl port-forward service/registry 8081:$REGISTRY_LCD_PORT > /dev/null 2>&1 &
-  kubectl port-forward service/registry 9091:$REGISTRY_GRPC_PORT > /dev/null 2>&1 &
+  kubectl port-forward --namespace $NAMESPACE service/registry 8081:$REGISTRY_LCD_PORT > /dev/null 2>&1 &
+  kubectl port-forward --namespace $NAMESPACE service/registry 9091:$REGISTRY_GRPC_PORT > /dev/null 2>&1 &
   sleep 1
   color yellow "registry: forwarded registry lcd to grpc http://localhost:8081, to http://localhost:9091"
 fi
 
 if [[ $(yq -r ".explorer.enabled" $CONFIGFILE) == "true" ]];
 then
-  kubectl port-forward service/explorer 8080:$EXPLORER_LCD_PORT > /dev/null 2>&1 &
+  kubectl port-forward --namespace $NAMESPACE service/explorer 8080:$EXPLORER_LCD_PORT > /dev/null 2>&1 &
   sleep 1
   color green "Open the explorer to get started.... http://localhost:8080"
 fi
