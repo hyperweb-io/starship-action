@@ -19,7 +19,7 @@ inputs:
   version:
     description: "Version of devnet chart (default: 0.1.30)"
     required: false
-    default: "0.1.30"
+    default: "0.1.32"
   chart:
     description: "Name of  the help chart to use. Recommended: use default (default: starship/devnet)"
     required: false
@@ -126,7 +126,7 @@ runs:
 
     - name: Port forward
       if: ${{ inputs.port-forward == 'true' }}
-      run: ${{ github.action_path }}/port_forward.sh
+      run: ${{ github.action_path }}/port_forward.sh --config=$VALUES_FILE
       shell: bash
       env:
         VALUES_FILE: ${{ inputs.name }}-values.yaml
