@@ -30,8 +30,12 @@ jobs:
                 rest: 1313
                 rpc: 26653
               resources:
-                cpu: "0.2"
-                memory: "200M"
+                limits:
+                  cpu: "0.2"
+                  memory: "200M"
+                requests:
+                  cpu: "0.1"
+                  memory: "100M"
             - name: wasmd
               type: wasmd
               numValidators: 1
@@ -39,8 +43,12 @@ jobs:
                 rpc: 26659
                 rest: 1319
               resources:
-                cpu: "0.2"
-                memory: "200M"
+                limits:
+                  cpu: "0.2"
+                  memory: "200M"
+                requests:
+                  cpu: "0.1"
+                  memory: "100M"
 
       - name: Check kubectl pods
         run: |
