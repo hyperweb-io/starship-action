@@ -128,7 +128,7 @@ runs:
       if: always()
       run: |
         kubectl get pods -n $NAMESPACE
-        for i in `kubectl get po -o json | jq -r '.items[].metadata.name'`; do
+        for i in `kubectl get po -n $NAMESPACE -o json | jq -r '.items[].metadata.name'`; do
           echo "==================================================="
           echo "Logs for $i"
           kubectl describe pods $i -n $NAMESPACE --all-containers
