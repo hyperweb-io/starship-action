@@ -51,7 +51,7 @@ runs:
 
     - name: Install dependencies
       run: |
-        sudo apt-get install -y make sed wget tar
+        sudo apt-get install -y make sed wget tar jq
         sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
         sudo chmod +x /usr/bin/yq
       shell: bash
@@ -122,6 +122,22 @@ runs:
     - name: Helm install
       run: |
         helm install -f ${{ inputs.name }}-values.yaml ${{ inputs.name }} ${{ inputs.chart }} --wait --debug --version ${{ inputs.version }} --timeout 30m0s --namespace ${{ steps.set-namespace.outputs.namespace }} --create-namespace
+      shell: bash
+
+    - name: Logs
+      if: always()
+      run: |
+        kubectl get pods -n $NAMESPACE
+        for i in `kubectl get po -o json | jq -r '.items[].metadata.name'`; do
+          echo "==================================================="
+          echo "Logs for $i"
+          kubectl describe pods $i -n $NAMESPACE --all-containers
+          kubectl logs $i -n $NAMESPACE --all-containers --tail=100
+          echo "==================================================="
+        done
+      env:
+        VALUES_FILE: ${{ inputs.name }}-values.yaml
+        NAMESPACE: ${{ steps.set-namespace.outputs.namespace }}
       shell: bash
 
     - name: Port forward
