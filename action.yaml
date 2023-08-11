@@ -131,7 +131,7 @@ runs:
         for i in `kubectl get po -n $NAMESPACE -o json | jq -r '.items[].metadata.name'`; do
           echo "==================================================="
           echo "Logs for $i"
-          kubectl describe pods $i -n $NAMESPACE --all-containers
+          kubectl describe pods $i -n $NAMESPACE
           kubectl logs $i -n $NAMESPACE --all-containers --tail=100
           echo "==================================================="
         done
