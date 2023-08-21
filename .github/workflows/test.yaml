@@ -47,6 +47,7 @@ jobs:
                   cpu: "0.1"
                   memory: "100M"
           EOF
+          cat config.yaml
 
       - uses: ./
         id: starship
