@@ -18,7 +18,7 @@ jobs:
 
       - name: Create yaml file
         run: |
-          echo <<EOF > config.yaml
+          cat <<EOF > config.yaml
           chains:
             - name: osmosis-1
               type: osmosis
