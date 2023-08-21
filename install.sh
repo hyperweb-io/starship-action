@@ -16,11 +16,23 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 echo "Script dir: ${SCRIPT_DIR}"
 
 # default values
+DRY_RUN=""
+TIMEOUT=""
+NAMESPACE=""
 HELM_NAME="starship"
 HELM_CHART="starship/devnet"
 HELM_CHART_VERSION="0.1.43"
 
 function set_helm_args() {
+  if [[ $TIMEOUT ]]; then
+    args="$args --timeout $TIMEOUT --wait --debug"
+  fi
+  if [[ $NAMESPACE ]]; then
+    args="$args --namespace $NAMESPACE --create-namespace"
+  fi
+  if [[ $DRY_RUN ]]; then
+    args="$args --dry-run"
+  fi
   num_chains=$(yq -r ".chains | length - 1" ${CONFIGFILE})
   if [[ $num_chains -lt 0 ]]; then
     echo "No chains to parse: num: $num_chains"
@@ -36,15 +48,6 @@ function set_helm_args() {
       args="$args --set-file chains[$i].scripts.$script.data=$(dirname ${CONFIGFILE})/$(yq -r ".chains[$i].scripts.$script.file" ${CONFIGFILE})"
     done
   done
-  if [[ $TIMEOUT ]]; then
-    args="$args --timeout $TIMEOUT --wait --debug"
-  fi
-  if [[ $NAMESPACE ]]; then
-    args="$args --namespace $NAMESPACE --create-namespace"
-  fi
-  if [[ $DRY_RUN ]]; then
-    args="$args --dry-run"
-  fi
 }
 
 function install_chart() {
