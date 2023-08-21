@@ -124,7 +124,7 @@ runs:
       run: |
         helm delete ${{ inputs.name }} --debug --namespace ${{ steps.set-namespace.outputs.namespace }} --wait || true
         sleep 5
-        helm install -f ${{ inputs.name }}-values.yaml ${{ inputs.name }} ${{ inputs.chart }} --wait --debug --version ${{ inputs.version }} --timeout ${{ inputs.timeout }} --namespace ${{ steps.set-namespace.outputs.namespace }} --create-namespace
+        ${{ github.action_path }}/install.sh --config ${{ inputs.values }} --name ${{ inputs.name }} --chart ${{ inputs.chart }} --version ${{ inputs.version }} --namespace ${{ steps.set-namespace.outputs.namespace }} --timeout ${{ inputs.timeout }}
       shell: bash
 
     - name: Logs
@@ -150,7 +150,7 @@ runs:
         helm delete ${{ inputs.name }} --debug --namespace ${{ steps.set-namespace.outputs.namespace }} --wait || true
         sleep 5
         kubectl get pods --namespace ${{ steps.set-namespace.outputs.namespace }}
-        helm install -f ${{ inputs.name }}-values.yaml ${{ inputs.name }} ${{ inputs.chart }} --wait --debug --version ${{ inputs.version }} --timeout ${{ inputs.timeout }} --namespace ${{ steps.set-namespace.outputs.namespace }} --create-namespace
+        ${{ github.action_path }}/install.sh --config ${{ inputs.name }}-values.yaml --name ${{ inputs.name }} --chart ${{ inputs.chart }} --version ${{ inputs.version }} --namespace ${{ steps.set-namespace.outputs.namespace }} --timeout ${{ inputs.timeout }}
       shell: bash
 
     - name: Port forward
