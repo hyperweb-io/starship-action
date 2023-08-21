@@ -93,6 +93,4 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-check_helm
-setup_helm
 install_chart
