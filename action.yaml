@@ -135,7 +135,7 @@ runs:
           echo "==================================================="
           echo "Logs for $i"
           kubectl describe pods $i -n $NAMESPACE
-          kubectl logs $i -n $NAMESPACE --all-containers --tail=300
+          kubectl logs $i -n $NAMESPACE --all-containers --tail=800
           echo "==================================================="
         done
       env:
