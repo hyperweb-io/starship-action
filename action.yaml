@@ -17,9 +17,9 @@ inputs:
     required: false
     default: ""
   version:
-    description: "Version of devnet chart (default: 0.1.42)"
+    description: "Version of devnet chart (default: 0.1.45)"
     required: false
-    default: "0.1.42"
+    default: "0.1.45"
   chart:
     description: "Name of  the help chart to use. Recommended: use default (default: starship/devnet)"
     required: false
@@ -135,7 +135,7 @@ runs:
           echo "==================================================="
           echo "Logs for $i"
           kubectl describe pods $i -n $NAMESPACE
-          kubectl logs $i -n $NAMESPACE --all-containers --tail=100
+          kubectl logs $i -n $NAMESPACE --all-containers --tail=300
           echo "==================================================="
         done
       env:
