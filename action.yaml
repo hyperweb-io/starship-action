@@ -17,9 +17,9 @@ inputs:
     required: false
     default: ""
   version:
-    description: "Version of devnet chart (default: 0.1.42)"
+    description: "Version of devnet chart (default: 0.1.45)"
     required: false
-    default: "0.1.42"
+    default: "0.1.45"
   chart:
     description: "Name of  the help chart to use. Recommended: use default (default: starship/devnet)"
     required: false
@@ -70,7 +70,7 @@ runs:
 
     - name: Setup kind cluster
       if: ${{ inputs.kubeconfig == '' }}
-      uses: helm/kind-action@v1.4.0
+      uses: helm/kind-action@v1.8.0
       with:
         cluster_name: kind-starship
 
@@ -135,7 +135,7 @@ runs:
           echo "==================================================="
           echo "Logs for $i"
           kubectl describe pods $i -n $NAMESPACE
-          kubectl logs $i -n $NAMESPACE --all-containers --tail=100
+          kubectl logs $i -n $NAMESPACE --all-containers --tail=800
           echo "==================================================="
         done
       env:
