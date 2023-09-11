@@ -167,7 +167,7 @@ runs:
     - name: Port forward
       if: ${{ inputs.port-forward == 'true' }}
       run: |
-        starship connect --config=$VALUES_FILE --namespace=$NAMESPACE --verbose
+        starship connect --config=$VALUES_FILE --namespace=$NAMESPACE --verbose 2>&1 &
       shell: bash
       env:
         VALUES_FILE: ${{ inputs.name }}-values.yaml
