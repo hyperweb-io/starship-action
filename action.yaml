@@ -168,7 +168,7 @@ runs:
       if: ${{ inputs.port-forward == 'true' }}
       run: |
         kubectl version
-        starship connect --config=$VALUES_FILE --namespace=$NAMESPACE --verbose
+        starship connect --config=$VALUES_FILE --namespace=$NAMESPACE --verbose 2>&1 &
       shell: bash
       env:
         VALUES_FILE: ${{ inputs.name }}-values.yaml
