@@ -76,7 +76,7 @@ runs:
 
     - name: Install Starship cli
       run: |
-        go install github.com/cosmology-tech/starship/cmd/starship@9092b96a4a8da160ec2af0de3e80c6b8293fea8c
+        go install github.com/cosmology-tech/starship/cmd/starship@832581287e9022fad0dbe6d4be68b87d48729d99
       shell: bash
 
     - name: Setup kind cluster
