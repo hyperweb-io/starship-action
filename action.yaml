@@ -68,6 +68,17 @@ runs:
     - name: Setup kubectl
       uses: azure/setup-kubectl@v3
 
+    - name: Setup Golang
+      uses: actions/setup-go@v4
+      with:
+        go-version: "1.19"
+        check-latest: true
+
+    - name: Install Starship cli
+      run: |
+        go install github.com/cosmology-tech/starship/cmd/starship@e82d9eef4047347b5d29b33034a9bb0be366d2a4
+      shell: bash
+
     - name: Setup kind cluster
       if: ${{ inputs.kubeconfig == '' }}
       uses: helm/kind-action@v1.8.0
@@ -155,7 +166,9 @@ runs:
 
     - name: Port forward
       if: ${{ inputs.port-forward == 'true' }}
-      run: ${{ github.action_path }}/port_forward.sh --config=$VALUES_FILE
+      run: |
+        kubectl version
+        starship connect --config=$VALUES_FILE --namespace=$NAMESPACE --verbose 2>&1 &
       shell: bash
       env:
         VALUES_FILE: ${{ inputs.name }}-values.yaml
