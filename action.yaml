@@ -40,6 +40,10 @@ inputs:
     description: "Timeout for helm install (default: 10m)"
     required: false
     default: "10m"
+  cli-version:
+    description: "Starship cli version or commit (default: b8b22acaf5531da75a92e7cde579d365e4a8be86)"
+    required: false
+    default: "b8b22acaf5531da75a92e7cde579d365e4a8be86"
 
 outputs:
   namespace:
@@ -76,8 +80,10 @@ runs:
 
     - name: Install Starship cli
       run: |
-        go install github.com/cosmology-tech/starship/cmd/starship@b8b22acaf5531da75a92e7cde579d365e4a8be86
+        go install github.com/cosmology-tech/starship/cmd/starship@$CLI_VERSION
       shell: bash
+      env:
+        CLI_VERSION: ${{ inputs.cli-version }}
 
     - name: Setup kind cluster
       if: ${{ inputs.kubeconfig == '' }}
