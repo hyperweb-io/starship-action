@@ -43,7 +43,7 @@ inputs:
   cli-version:
     description: "Starship cli version or commit (default: b8b22acaf5531da75a92e7cde579d365e4a8be86)"
     required: false
-    default: "f35dc85407b350077765a0b3c17a4c1632c7d53c"
+    default: "b8b22acaf5531da75a92e7cde579d365e4a8be86"
 
 outputs:
   namespace:
