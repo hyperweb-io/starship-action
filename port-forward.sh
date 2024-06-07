@@ -40,6 +40,10 @@ for i in "$@"; do
       CONFIGFILE="${i#*=}"
       shift # past argument=value
       ;;
+    -n=*|--namespace=*)
+      NAMESPACE="$2"
+      shift # past argument=value
+      ;;
     -*|--*)
       echo "Unknown option $i"
       exit 1
@@ -68,14 +72,14 @@ if [[ $num_chains -gt -1 ]]; then
     color yellow "chains: forwarded $chain"
     if [[ $(yq -r ".chains[$i].cometmock.enabled" $CONFIGFILE) == "true" ]];
     then
-      [[ "$localrpc" != "null" ]] && color yellow "    cometmock rpc to http://localhost:$localrpc" && kubectl port-forward pods/$chain-cometmock-0 $localrpc:$CHAIN_COMETMOCK_PORT > /dev/null 2>&1 &
+      [[ "$localrpc" != "null" ]] && color yellow "    cometmock rpc to http://localhost:$localrpc" && kubectl port-forward pods/$chain-cometmock-0 $localrpc:$CHAIN_COMETMOCK_PORT --namespace $NAMESPACE > /dev/null 2>&1 &
     else
-      [[ "$localrpc" != "null" ]] && color yellow "    rpc to http://localhost:$localrpc" && kubectl port-forward pods/$chain-genesis-0 $localrpc:$CHAIN_RPC_PORT > /dev/null 2>&1 &
+      [[ "$localrpc" != "null" ]] && color yellow "    rpc to http://localhost:$localrpc" && kubectl port-forward pods/$chain-genesis-0 $localrpc:$CHAIN_RPC_PORT --namespace $NAMESPACE > /dev/null 2>&1 &
     fi
-    [[ "$localgrpc" != "null" ]] && color yellow "    grpc to http://localhost:$localgrpc" && kubectl port-forward pods/$chain-genesis-0 $localgrpc:$CHAIN_GRPC_PORT > /dev/null 2>&1 &
-    [[ "$locallcd" != "null" ]] && color yellow "    lcd to http://localhost:$locallcd" && kubectl port-forward pods/$chain-genesis-0 $locallcd:$CHAIN_LCD_PORT > /dev/null 2>&1 &
-    [[ "$localexp" != "null" ]] && color yellow "    exposer to http://localhost:$localexp" && kubectl port-forward pods/$chain-genesis-0 $localexp:$CHAIN_EXPOSER_PORT > /dev/null 2>&1 &
-    [[ "$localfaucet" != "null" ]] && color yellow "    faucet to http://localhost:$localfaucet" && kubectl port-forward pods/$chain-genesis-0 $localfaucet:$CHAIN_FAUCET_PORT > /dev/null 2>&1 &
+    [[ "$localgrpc" != "null" ]] && color yellow "    grpc to http://localhost:$localgrpc" && kubectl port-forward pods/$chain-genesis-0 $localgrpc:$CHAIN_GRPC_PORT --namespace $NAMESPACE > /dev/null 2>&1 &
+    [[ "$locallcd" != "null" ]] && color yellow "    lcd to http://localhost:$locallcd" && kubectl port-forward pods/$chain-genesis-0 $locallcd:$CHAIN_LCD_PORT --namespace $NAMESPACE > /dev/null 2>&1 &
+    [[ "$localexp" != "null" ]] && color yellow "    exposer to http://localhost:$localexp" && kubectl port-forward pods/$chain-genesis-0 $localexp:$CHAIN_EXPOSER_PORT --namespace $NAMESPACE > /dev/null 2>&1 &
+    [[ "$localfaucet" != "null" ]] && color yellow "    faucet to http://localhost:$localfaucet" && kubectl port-forward pods/$chain-genesis-0 $localfaucet:$CHAIN_FAUCET_PORT --namespace $NAMESPACE > /dev/null 2>&1 &
     sleep 1
   done
 else
@@ -94,8 +98,8 @@ if [[ $num_relayers -gt -1 ]]; then
     localrest=$(yq -r ".relayers[$i].ports.rest" ${CONFIGFILE} )
     localexposer=$(yq -r ".relayers[$i].ports.exposer" ${CONFIGFILE} )
     color yellow "relayers: forwarded $relayer"
-    [[ "$localrest" != "null" ]] && color yellow "    rpc to http://localhost:$localrest" && kubectl port-forward pods/$relayer-0 $localrest:$RELAYER_REST_PORT > /dev/null 2>&1 &
-    [[ "$localexposer" != "null" ]] && color yellow "    rpc to http://localhost:$localexposer" && kubectl port-forward pods/$relayer-0 $localexposer:$RELAYER_EXPOSER_PORT > /dev/null 2>&1 &
+    [[ "$localrest" != "null" ]] && color yellow "    rpc to http://localhost:$localrest" && kubectl port-forward pods/$relayer-0 $localrest:$RELAYER_REST_PORT --namespace $NAMESPACE > /dev/null 2>&1 &
+    [[ "$localexposer" != "null" ]] && color yellow "    rpc to http://localhost:$localexposer" && kubectl port-forward pods/$relayer-0 $localexposer:$RELAYER_EXPOSER_PORT --namespace $NAMESPACE > /dev/null 2>&1 &
     sleep 1
   done
 else
@@ -107,15 +111,15 @@ echo "Port forward services"
 
 if [[ $(yq -r ".registry.enabled" $CONFIGFILE) == "true" ]];
 then
-  kubectl port-forward service/registry 8081:$REGISTRY_LCD_PORT > /dev/null 2>&1 &
-  kubectl port-forward service/registry 9091:$REGISTRY_GRPC_PORT > /dev/null 2>&1 &
+  kubectl port-forward service/registry 8081:$REGISTRY_LCD_PORT --namespace $NAMESPACE > /dev/null 2>&1 &
+  kubectl port-forward service/registry 9091:$REGISTRY_GRPC_PORT --namespace $NAMESPACE > /dev/null 2>&1 &
   sleep 1
   color yellow "registry: forwarded registry lcd to grpc http://localhost:8081, to http://localhost:9091"
 fi
 
 if [[ $(yq -r ".explorer.enabled" $CONFIGFILE) == "true" ]];
 then
-  kubectl port-forward service/explorer 8080:$EXPLORER_LCD_PORT > /dev/null 2>&1 &
+  kubectl port-forward service/explorer 8080:$EXPLORER_LCD_PORT --namespace $NAMESPACE > /dev/null 2>&1 &
   sleep 1
   color green "Open the explorer to get started.... http://localhost:8080"
 fi
@@ -125,7 +129,7 @@ then
   color yellow "monitoring port forward:"
   localgrafana=$(yq -r ".monitoring.ports.grafana" ${CONFIGFILE})
   localprometheus=$(yq -r ".monitoring.ports.prometheus" ${CONFIGFILE})
-  [[ "$localgrafana" != "null" ]] && color yellow "    grafana to http://localhost:$localgrafana" && kubectl port-forward service/grafana $localgrafana:$MONITORING_GRAFANA_PORT > /dev/null 2>&1 &
-  [[ "$localprometheus" != "null" ]] && color yellow "    prometheus to http://localhost:$localprometheus" && kubectl port-forward service/prometheus-service $localprometheus:$MONITORING_PROMETHEUS_PORT > /dev/null 2>&1 &
+  [[ "$localgrafana" != "null" ]] && color yellow "    grafana to http://localhost:$localgrafana" && kubectl port-forward service/grafana $localgrafana:$MONITORING_GRAFANA_PORT --namespace $NAMESPACE > /dev/null 2>&1 &
+  [[ "$localprometheus" != "null" ]] && color yellow "    prometheus to http://localhost:$localprometheus" && kubectl port-forward service/prometheus-service $localprometheus:$MONITORING_PROMETHEUS_PORT --namespace $NAMESPACE > /dev/null 2>&1 &
   sleep 1
 fi

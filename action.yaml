@@ -70,12 +70,6 @@ runs:
       with:
         version: v1.28.0
 
-    - name: Setup Golang
-      uses: actions/setup-go@v4
-      with:
-        go-version: "1.21"
-        check-latest: true
-
     - name: Setup kind cluster
       if: ${{ inputs.kubeconfig == '' }}
       uses: helm/kind-action@v1.8.0
@@ -165,7 +159,7 @@ runs:
       if: ${{ inputs.port-forward == 'true' }}
       run: |
         kubectl version
-        ${{ github.action_path }}/port-forward.sh --config $VALUES_FILE
+        ${{ github.action_path }}/port-forward.sh --config=$VALUES_FILE --namespace=$NAMESPACE
       shell: bash
       env:
         VALUES_FILE: ${{ inputs.name }}-values.yaml
