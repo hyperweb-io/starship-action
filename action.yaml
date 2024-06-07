@@ -19,7 +19,7 @@ inputs:
   version:
     description: "Version of devnet chart (default: 0.1.45)"
     required: false
-    default: "0.1.45"
+    default: "0.2.3"
   chart:
     description: "Name of  the help chart to use. Recommended: use default (default: starship/devnet)"
     required: false
@@ -40,10 +40,6 @@ inputs:
     description: "Timeout for helm install (default: 10m)"
     required: false
     default: "10m"
-  cli-version:
-    description: "Starship cli version or commit (default: b8b22acaf5531da75a92e7cde579d365e4a8be86)"
-    required: false
-    default: "b8b22acaf5531da75a92e7cde579d365e4a8be86"
 
 outputs:
   namespace:
@@ -73,19 +69,6 @@ runs:
       uses: azure/setup-kubectl@v3
       with:
         version: v1.28.0
-
-    - name: Setup Golang
-      uses: actions/setup-go@v4
-      with:
-        go-version: "1.21"
-        check-latest: true
-
-    - name: Install Starship cli
-      run: |
-        go install github.com/cosmology-tech/starship/cmd/starship@$CLI_VERSION
-      shell: bash
-      env:
-        CLI_VERSION: ${{ inputs.cli-version }}
 
     - name: Setup kind cluster
       if: ${{ inputs.kubeconfig == '' }}
@@ -176,7 +159,7 @@ runs:
       if: ${{ inputs.port-forward == 'true' }}
       run: |
         kubectl version
-        starship connect --config=$VALUES_FILE --namespace=$NAMESPACE --verbose 2>&1 &
+        ${{ github.action_path }}/port-forward.sh --config=$VALUES_FILE --namespace=$NAMESPACE
       shell: bash
       env:
         VALUES_FILE: ${{ inputs.name }}-values.yaml

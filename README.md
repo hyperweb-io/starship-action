@@ -18,7 +18,7 @@ For more information on inputs, see the [API Documentation](https://developer.gi
 - `values`: Required, config for helm chart for starship devnet inputs
 - `port-forward`: Optional, toggle to perform local port-forwarding, based on the `values.yaml` (default: `false`)
 - `kubeconfig`: Optional, Kubeconfig for remote cluster, if set, will be used instead of creating local kind cluster
-- `version`: Optional, version of devnet chart from starship (default: `0.1.4`)
+- `version`: Optional, version of devnet chart from starship (default: `0.2.3`)
 - `repo`: Optional, Helm repo to fetch the chart from (default: https://cosmology-tech.github.io/starship)
 - `name`: Optional, Release name for the helm chart deployment (default: `starship-devnet`)
 - `namespace`: Optional, Kubernetes namespace to which helm charts will be deployed. If not found, namespace will be created. (default: `ci-${{ github.repository }}-${{ github.workflow }}-${{ github.ref }}`)
@@ -45,8 +45,8 @@ jobs:
         with:
           values: |
             chains:
-            - name: osmosis-1
-              type: osmosis
+            - id: osmosis-1
+              name: osmosis
               numValidators: 1
               ports:
                 rest: 1313
@@ -58,8 +58,8 @@ jobs:
                 requests:
                   cpu: "0.1"
                   memory: "100M"
-            - name: wasmd
-              type: wasmd
+            - id: wasmd
+              name: wasmd
               numValidators: 1
               ports:
                 rpc: 26659

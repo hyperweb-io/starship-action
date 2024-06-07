@@ -20,8 +20,8 @@ jobs:
         run: |
           cat <<EOF > config.yaml
           chains:
-            - name: osmosis-1
-              type: osmosis
+            - id: osmosis-1
+              name: osmosis
               numValidators: 1
               ports:
                 rest: 1313
@@ -33,8 +33,8 @@ jobs:
                 requests:
                   cpu: "0.1"
                   memory: "100M"
-            - name: wasmd
-              type: wasmd
+            - id: wasmd
+              name: wasmd
               numValidators: 1
               ports:
                 rpc: 26659
@@ -116,8 +116,8 @@ jobs:
         run: |
           cat <<EOF > config.yaml
           chains:
-          - name: osmosis-1
-            type: osmosis
+          - id: osmosis-1
+            name: osmosis
             numValidators: 1
             ports:
               rest: 1313
@@ -159,8 +159,8 @@ jobs:
         run: |
           cat <<EOF > config.yaml
           chains:
-            - name: osmosis-1
-              type: osmosis
+            - id: osmosis-1
+              name: osmosis
               numValidators: 1
               resources:
                 cpu: "0.2"
