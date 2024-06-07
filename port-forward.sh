@@ -41,7 +41,7 @@ for i in "$@"; do
       shift # past argument=value
       ;;
     -n=*|--namespace=*)
-      NAMESPACE="$2"
+      NAMESPACE="${i#*=}"
       shift # past argument=value
       ;;
     -*|--*)
