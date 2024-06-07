@@ -21,7 +21,7 @@ TIMEOUT=""
 NAMESPACE=""
 HELM_NAME="starship"
 HELM_CHART="starship/devnet"
-HELM_CHART_VERSION="0.1.43"
+HELM_CHART_VERSION="0.2.3"
 
 function set_helm_args() {
   if [[ $TIMEOUT ]]; then
