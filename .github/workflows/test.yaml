@@ -159,8 +159,8 @@ jobs:
         run: |
           cat <<EOF > config.yaml
           chains:
-            - name: osmosis-1
-              type: osmosis
+            - id: osmosis-1
+              name: osmosis
               numValidators: 1
               resources:
                 cpu: "0.2"
