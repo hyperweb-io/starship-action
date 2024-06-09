@@ -53,12 +53,11 @@ runs:
   using: composite
   steps:
 
-    - name: Install dependencies
-      run: |
-        sudo apt-get install -y make sed wget tar jq
-        sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
-        sudo chmod +x /usr/bin/yq
-      shell: bash
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: "20.x"
+        cache: "yarn"
 
     - name: Setup helm
       uses: azure/setup-helm@v3
@@ -112,8 +111,15 @@ runs:
       env:
         INPUT_NAMESPACE: ${{ inputs.namespace }}
 
+    - name: Setup starshipjs client
+      run: |
+        yarn global add @starship-ci/cli
+        starship --version
+      shell: bash
+
     - name: Setup starship helm repo
       run: |
+        starship setup --helmName ${{ inputs.name }} --helmVersion 
         helm version
         helm repo add starship ${{ inputs.repo }}
         helm repo update
