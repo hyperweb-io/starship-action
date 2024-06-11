@@ -119,11 +119,13 @@ runs:
 
     - name: Setup starship helm repo
       run: |
-        starship setup --helmName ${{ inputs.name }} --helmVersion 
-        helm version
-        helm repo add starship ${{ inputs.repo }}
-        helm repo update
-        helm search repo starship/devnet
+        starship setup \
+          --helmName ${{ inputs.name }} \
+          --helmVersion ${{ inputs.version }} \
+          --helmFile ${{ inputs.values }}-values.yaml \
+          --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
+          --helmRepo ${{ inputs.repo }} \
+          --helmChart ${{ inputs.chart }}
       shell: bash
 
     - name: Helm install
@@ -132,7 +134,13 @@ runs:
       run: |
         helm delete ${{ inputs.name }} --debug --namespace ${{ steps.set-namespace.outputs.namespace }} --wait || true
         sleep 5
-        ${{ github.action_path }}/install.sh --config ${{ inputs.values }} --name ${{ inputs.name }} --chart ${{ inputs.chart }} --version ${{ inputs.version }} --namespace ${{ steps.set-namespace.outputs.namespace }} --timeout ${{ inputs.timeout }}
+        starship start \
+          --helmName ${{ inputs.name }} \
+          --helmVersion ${{ inputs.version }} \
+          --helmFile ${{ inputs.values }}-values.yaml \
+          --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
+          --helmRepo ${{ inputs.repo }} \
+          --helmChart ${{ inputs.chart }}
       shell: bash
 
     - name: Logs
@@ -158,15 +166,11 @@ runs:
         helm delete ${{ inputs.name }} --debug --namespace ${{ steps.set-namespace.outputs.namespace }} --wait || true
         sleep 5
         kubectl get pods --namespace ${{ steps.set-namespace.outputs.namespace }}
-        ${{ github.action_path }}/install.sh --config ${{ inputs.name }}-values.yaml --name ${{ inputs.name }} --chart ${{ inputs.chart }} --version ${{ inputs.version }} --namespace ${{ steps.set-namespace.outputs.namespace }} --timeout ${{ inputs.timeout }}
+        starship start \
+          --helmName ${{ inputs.name }} \
+          --helmVersion ${{ inputs.version }} \
+          --helmFile ${{ inputs.values }}-values.yaml \
+          --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
+          --helmRepo ${{ inputs.repo }} \
+          --helmChart ${{ inputs.chart }}
       shell: bash
-
-    - name: Port forward
-      if: ${{ inputs.port-forward == 'true' }}
-      run: |
-        kubectl version
-        ${{ github.action_path }}/port-forward.sh --config=$VALUES_FILE --namespace=$NAMESPACE
-      shell: bash
-      env:
-        VALUES_FILE: ${{ inputs.name }}-values.yaml
-        NAMESPACE: ${{ steps.set-namespace.outputs.namespace }}
