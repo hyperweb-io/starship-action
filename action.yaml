@@ -124,7 +124,6 @@ runs:
           --helmVersion ${{ inputs.version }} \
           --helmFile $GITHUB_WORKSPACE/${{ inputs.name }}-values.yaml \
           --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
-          --helmRepo ${{ inputs.repo }} \
           --helmChart ${{ inputs.chart }}
       shell: bash
 
@@ -139,7 +138,6 @@ runs:
           --helmVersion ${{ inputs.version }} \
           --helmFile $GITHUB_WORKSPACE/${{ inputs.name }}-values.yaml \
           --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
-          --helmRepo ${{ inputs.repo }} \
           --helmChart ${{ inputs.chart }}
       shell: bash
 
@@ -171,6 +169,5 @@ runs:
           --helmVersion ${{ inputs.version }} \
           --helmFile $GITHUB_WORKSPACE/${{ inputs.name }}-values.yaml \
           --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
-          --helmRepo ${{ inputs.repo }} \
           --helmChart ${{ inputs.chart }}
       shell: bash
