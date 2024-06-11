@@ -122,7 +122,7 @@ runs:
         starship setup \
           --helmName ${{ inputs.name }} \
           --helmVersion ${{ inputs.version }} \
-          --helmFile ${{ inputs.values }}-values.yaml \
+          --helmFile ${{ inputs.name }}-values.yaml \
           --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
           --helmRepo ${{ inputs.repo }} \
           --helmChart ${{ inputs.chart }}
@@ -137,7 +137,7 @@ runs:
         starship start \
           --helmName ${{ inputs.name }} \
           --helmVersion ${{ inputs.version }} \
-          --helmFile ${{ inputs.values }}-values.yaml \
+          --helmFile ${{ inputs.name }}-values.yaml \
           --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
           --helmRepo ${{ inputs.repo }} \
           --helmChart ${{ inputs.chart }}
@@ -169,7 +169,7 @@ runs:
         starship start \
           --helmName ${{ inputs.name }} \
           --helmVersion ${{ inputs.version }} \
-          --helmFile ${{ inputs.values }}-values.yaml \
+          --helmFile ${{ inputs.name }}-values.yaml \
           --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
           --helmRepo ${{ inputs.repo }} \
           --helmChart ${{ inputs.chart }}
