@@ -113,7 +113,7 @@ runs:
 
     - name: Setup starshipjs client
       run: |
-        yarn add @starship-ci/cli
+        yarn global add @starship-ci/cli
         starship --version
       shell: bash
 
