@@ -19,7 +19,7 @@ inputs:
   version:
     description: "Version of devnet chart (default: 0.1.45)"
     required: false
-    default: "0.2.3"
+    default: "v0.2.3"
   chart:
     description: "Name of  the help chart to use. Recommended: use default (default: starship/devnet)"
     required: false
@@ -122,7 +122,7 @@ runs:
         starship setup \
           --helmName ${{ inputs.name }} \
           --helmVersion ${{ inputs.version }} \
-          --helmFile ${{ inputs.name }}-values.yaml \
+          --helmFile $GITHUB_WORKSPACE/${{ inputs.name }}-values.yaml \
           --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
           --helmRepo ${{ inputs.repo }} \
           --helmChart ${{ inputs.chart }}
@@ -137,7 +137,7 @@ runs:
         starship start \
           --helmName ${{ inputs.name }} \
           --helmVersion ${{ inputs.version }} \
-          --helmFile ${{ inputs.name }}-values.yaml \
+          --helmFile $GITHUB_WORKSPACE/${{ inputs.name }}-values.yaml \
           --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
           --helmRepo ${{ inputs.repo }} \
           --helmChart ${{ inputs.chart }}
@@ -169,7 +169,7 @@ runs:
         starship start \
           --helmName ${{ inputs.name }} \
           --helmVersion ${{ inputs.version }} \
-          --helmFile ${{ inputs.name }}-values.yaml \
+          --helmFile $GITHUB_WORKSPACE/${{ inputs.name }}-values.yaml \
           --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
           --helmRepo ${{ inputs.repo }} \
           --helmChart ${{ inputs.chart }}
