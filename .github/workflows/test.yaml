@@ -52,7 +52,6 @@ jobs:
       - uses: ./
         id: starship
         with:
-          port-forward: true
           name: test-with-values
           values: config.yaml
 
@@ -130,7 +129,6 @@ jobs:
       - uses: ./
         id: starship
         with:
-          port-forward: true
           name: test-kubeconfig
           kubeconfig: ${{ steps.kubeconfig.outputs.content }}
           values: config.yaml
@@ -170,7 +168,6 @@ jobs:
       - uses: ./
         id: starship
         with:
-          port-forward: false
           name: test-no-portforward
           values: config.yaml
 
