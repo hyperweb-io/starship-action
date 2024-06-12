@@ -111,6 +111,11 @@ runs:
       env:
         INPUT_NAMESPACE: ${{ inputs.namespace }}
 
+    - name: Create namespace if nonexistent
+      run: |
+        kubectl create namespace ${{ steps.set-namespace.outputs.namespace }} || true
+      shell: bash
+
     - name: Setup starshipjs client
       run: |
         yarn global add @starship-ci/cli
