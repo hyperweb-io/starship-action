@@ -147,7 +147,7 @@ jobs:
           NAMESPACE: ${{ steps.starship.outputs.namespace }}
           NAME: ${{ steps.starship.outputs.name }}
 
-  test-with-no-portforward:
+  test-with-no-ports:
     runs-on: ubuntu-latest
     steps:
 

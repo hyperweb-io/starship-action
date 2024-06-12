@@ -36,10 +36,6 @@ inputs:
     description: "Kubernetes namespace to deploy helm charts on (default: ci-{github.repository}-{github.workflow}-{github.ref} )"
     required: false
     default: ""
-  timeout:
-    description: "Timeout for helm install (default: 10m)"
-    required: false
-    default: "10m"
 
 outputs:
   namespace:

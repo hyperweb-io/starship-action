@@ -16,12 +16,12 @@ For more information, reference the GitHub Help Documentation for [Creating a wo
 For more information on inputs, see the [API Documentation](https://developer.github.com/v3/repos/releases/#input)
 
 - `values`: Required, config for helm chart for starship devnet inputs
-- `port-forward`: Optional, toggle to perform local port-forwarding, based on the `values.yaml` (default: `false`)
+- `version`: Optional, version of devnet helm chart from starship (default: `0.2.3`)
+- `cli-version`: Optional, version of @starship-ci/cli to use (default: `2.4.0`)
 - `kubeconfig`: Optional, Kubeconfig for remote cluster, if set, will be used instead of creating local kind cluster
-- `version`: Optional, version of devnet chart from starship (default: `0.2.3`)
+- `namespace`: Optional, Kubernetes namespace to which helm charts will be deployed. If not found, namespace will be created. (default: `ci-${{ github.repository }}-${{ github.workflow }}-${{ github.ref }}`)
 - `repo`: Optional, Helm repo to fetch the chart from (default: https://cosmology-tech.github.io/starship)
 - `name`: Optional, Release name for the helm chart deployment (default: `starship-devnet`)
-- `namespace`: Optional, Kubernetes namespace to which helm charts will be deployed. If not found, namespace will be created. (default: `ci-${{ github.repository }}-${{ github.workflow }}-${{ github.ref }}`)
 - `chart`: Optional, Name of  the help chart to use. Recommended: use default (default: `starship/devnet`)
 
 ### Outputs
