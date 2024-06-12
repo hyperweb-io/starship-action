@@ -1,0 +1,8 @@
+{
+  "name": "starship-action",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:cosmology-tech/starship-action.git",
+  "author": "Anmol1696 <anmol1696@gmail.com>",
+  "license": "MIT"
+}
