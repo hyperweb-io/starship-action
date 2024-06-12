@@ -23,7 +23,7 @@ inputs:
   chart:
     description: "Name of  the help chart to use. Recommended: use default (default: starship/devnet)"
     required: false
-    default: "starship/devnet"
+    default: "devnet"
   repo:
     description: "Helm repo to fetch the chart from (default: https://cosmology-tech.github.io/starship)"
     required: false
