@@ -50,6 +50,7 @@ runs:
   steps:
 
     - name: Create yarn.lock and package.json file if not exists
+      if: inputs.cli-version != '0.0.0'  # Skip if cli-version is 0.0.0, expected to be used for local testing
       run: |
         if [ ! -f $GITHUB_WORKSPACE/yarn.lock ]; then
           echo 'Creating temporary yarn.lock file'
