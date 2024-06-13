@@ -127,7 +127,7 @@ runs:
         yarn starship setup \
           --helmName ${{ inputs.name }} \
           --helmVersion ${{ inputs.version }} \
-          --helmFile ${{ inputs.config }} \
+          --helmFile $GITHUB_WORKSPACE/${{ inputs.config }} \
           --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
           --helmChart ${{ inputs.chart }}
       shell: bash
@@ -141,7 +141,7 @@ runs:
         yarn starship start \
           --helmName ${{ inputs.name }} \
           --helmVersion ${{ inputs.version }} \
-          --helmFile ${{ inputs.config }} \
+          --helmFile $GITHUB_WORKSPACE/${{ inputs.config }} \
           --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
           --helmChart ${{ inputs.chart }}
       shell: bash
@@ -172,7 +172,7 @@ runs:
         yarn starship start \
           --helmName ${{ inputs.name }} \
           --helmVersion ${{ inputs.version }} \
-          --helmFile ${{ inputs.config }} \
+          --helmFile $GITHUB_WORKSPACE/${{ inputs.config }} \
           --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
           --helmChart ${{ inputs.chart }}
       shell: bash
