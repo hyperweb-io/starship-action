@@ -49,11 +49,15 @@ runs:
   using: composite
   steps:
 
-    - name: Create yarn.lock file if not exists
+    - name: Create yarn.lock and package.json file if not exists
       run: |
         if [ ! -f $GITHUB_WORKSPACE/yarn.lock ]; then
           echo 'Creating temporary yarn.lock file'
           echo '' > $GITHUB_WORKSPACE/yarn.lock
+        fi
+        if [ ! -f $GITHUB_WORKSPACE/package.json ]; then
+          echo 'Creating temporary package.json file'
+          echo '{}' > $GITHUB_WORKSPACE/package.json
         fi
       shell: bash
 
@@ -124,13 +128,13 @@ runs:
     - name: Setup starshipjs client
       if: inputs.cli-version != '0.0.0'  # Skip if cli-version is 0.0.0, expected to be used for local testing
       run: |
-        yarn global add @starship-ci/cli@${{ inputs.cli-version }}
-        starship --version
+        yarn add @starship-ci/cli@${{ inputs.cli-version }}
+        yarn starship --version
       shell: bash
 
     - name: Setup starship helm repo
       run: |
-        starship setup \
+        yarn starship setup \
           --helmName ${{ inputs.name }} \
           --helmVersion ${{ inputs.version }} \
           --helmFile $GITHUB_WORKSPACE/${{ inputs.name }}-values.yaml \
@@ -144,7 +148,7 @@ runs:
       run: |
         helm delete ${{ inputs.name }} --debug --namespace ${{ steps.set-namespace.outputs.namespace }} --wait || true
         sleep 5
-        starship start \
+        yarn starship start \
           --helmName ${{ inputs.name }} \
           --helmVersion ${{ inputs.version }} \
           --helmFile $GITHUB_WORKSPACE/${{ inputs.name }}-values.yaml \
@@ -175,7 +179,7 @@ runs:
         helm delete ${{ inputs.name }} --debug --namespace ${{ steps.set-namespace.outputs.namespace }} --wait || true
         sleep 5
         kubectl get pods --namespace ${{ steps.set-namespace.outputs.namespace }}
-        starship start \
+        yarn starship start \
           --helmName ${{ inputs.name }} \
           --helmVersion ${{ inputs.version }} \
           --helmFile $GITHUB_WORKSPACE/${{ inputs.name }}-values.yaml \
