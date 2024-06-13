@@ -15,7 +15,7 @@ inputs:
   cli-version:
     description: "Version of @starship-ci/cli to use: default: 2.3.0"
     required: false
-    default: "2.5.3"
+    default: "2.5.4"
   kubeconfig:
     description: "Kubeconfig file for remote cluster, if set, will be used instead of creating kind cluster"
     required: false
