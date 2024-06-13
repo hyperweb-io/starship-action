@@ -15,7 +15,7 @@ For more information, reference the GitHub Help Documentation for [Creating a wo
 
 For more information on inputs, see the [API Documentation](https://developer.github.com/v3/repos/releases/#input)
 
-- `values`: Required, config for helm chart for starship devnet inputs
+- `config`: Required, config file for helm chart for starship devnet inputs
 - `version`: Optional, version of devnet helm chart from starship (default: `0.2.3`)
 - `cli-version`: Optional, version of @starship-ci/cli to use (default: `2.4.0`)
 - `kubeconfig`: Optional, Kubeconfig for remote cluster, if set, will be used instead of creating local kind cluster
@@ -39,36 +39,13 @@ on: pull_request
 jobs:
   create-devnet:
     runs-on: ubuntu-latest
+    
     steps:
+      - uses: actions/checkout@v4
+        
       - name: Create starship devnet for osmos and wasm
-        uses: cosmology-tech/starship-action@v1
+        uses: cosmology-tech/starship-action@v0.4.4
         with:
-          values: |
-            chains:
-            - id: osmosis-1
-              name: osmosis
-              numValidators: 1
-              ports:
-                rest: 1313
-                rpc: 26653
-              resources:
-                limits:
-                  cpu: "0.2"
-                  memory: "200M"
-                requests:
-                  cpu: "0.1"
-                  memory: "100M"
-            - id: wasmd
-              name: wasmd
-              numValidators: 1
-              ports:
-                rpc: 26659
-                rest: 1319
-              resources:
-                limits:
-                  cpu: "0.2"
-                  memory: "200M"
-                requests:
-                  cpu: "0.1"
-                  memory: "100M"
+          config: ./starship-config.yaml
+          version: v0.2.3  # helm chart version
 ```
