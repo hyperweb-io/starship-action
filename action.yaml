@@ -15,7 +15,7 @@ inputs:
   cli-version:
     description: "Version of @starship-ci/cli to use: default: 2.3.0"
     required: false
-    default: "2.4.0"
+    default: "2.5.1"
   kubeconfig:
     description: "Kubeconfig file for remote cluster, if set, will be used instead of creating kind cluster"
     required: false
@@ -122,12 +122,17 @@ runs:
         yarn starship --version
       shell: bash
 
+    - name: Set TERM environment variable
+      run: |
+        echo "TERM=xterm" >> $GITHUB_ENV
+      shell: bash
+
     - name: Setup starship helm repo
       run: |
         yarn starship setup \
           --helmName ${{ inputs.name }} \
           --helmVersion ${{ inputs.version }} \
-          --helmFile $GITHUB_WORKSPACE/${{ inputs.config }} \
+          --helmFile ${{ inputs.config }} \
           --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
           --helmChart ${{ inputs.chart }}
       shell: bash
@@ -141,7 +146,7 @@ runs:
         yarn starship start \
           --helmName ${{ inputs.name }} \
           --helmVersion ${{ inputs.version }} \
-          --helmFile $GITHUB_WORKSPACE/${{ inputs.config }} \
+          --helmFile ${{ inputs.config }} \
           --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
           --helmChart ${{ inputs.chart }}
       shell: bash
@@ -172,7 +177,7 @@ runs:
         yarn starship start \
           --helmName ${{ inputs.name }} \
           --helmVersion ${{ inputs.version }} \
-          --helmFile $GITHUB_WORKSPACE/${{ inputs.config }} \
+          --helmFile ${{ inputs.config }} \
           --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
           --helmChart ${{ inputs.chart }}
       shell: bash
