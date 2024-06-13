@@ -15,7 +15,7 @@ inputs:
   cli-version:
     description: "Version of @starship-ci/cli to use: default: 2.3.0"
     required: false
-    default: "2.5.2"
+    default: "2.5.3"
   kubeconfig:
     description: "Kubeconfig file for remote cluster, if set, will be used instead of creating kind cluster"
     required: false
@@ -120,11 +120,6 @@ runs:
       run: |
         yarn add @starship-ci/cli@${{ inputs.cli-version }}
         yarn starship --version
-      shell: bash
-
-    - name: Set TERM environment variable
-      run: |
-        echo "TERM=xterm" >> $GITHUB_ENV
       shell: bash
 
     - name: Setup starship helm repo
