@@ -5,8 +5,8 @@ branding:
   icon: anchor
 
 inputs:
-  values:
-    description: "Values yaml raw data of filename for helm that define the topology for the devnet"
+  config:
+    description: "Path to the config file"
     required: true
   version:
     description: "Version of devnet chart (default: v0.2.3)"
@@ -15,7 +15,7 @@ inputs:
   cli-version:
     description: "Version of @starship-ci/cli to use: default: 2.3.0"
     required: false
-    default: "2.4.0"
+    default: "2.5.0"
   kubeconfig:
     description: "Kubeconfig file for remote cluster, if set, will be used instead of creating kind cluster"
     required: false
@@ -92,17 +92,6 @@ runs:
         echo -e "${{ inputs.kubeconfig }}" > ~/.kube/config
       shell: bash
 
-    - name: Create values.yaml
-      run: |
-        if [[ "${{ inputs.values }}" == *.yaml || "${{ inputs.values }}" == *.yml ]]
-        then
-          cp ${{ inputs.values }} ${{ inputs.name }}-values.yaml
-        else
-          echo -e "${{ inputs.values }}" > ${{ inputs.name }}-values.yaml
-        fi
-        cat ${{ inputs.name }}-values.yaml
-      shell: bash
-
     - name: Set namespace
       id: set-namespace
       run: |
@@ -138,7 +127,7 @@ runs:
         yarn starship setup \
           --helmName ${{ inputs.name }} \
           --helmVersion ${{ inputs.version }} \
-          --helmFile $GITHUB_WORKSPACE/${{ inputs.name }}-values.yaml \
+          --helmFile ${{ inputs.config }} \
           --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
           --helmChart ${{ inputs.chart }}
       shell: bash
@@ -152,7 +141,7 @@ runs:
         yarn starship start \
           --helmName ${{ inputs.name }} \
           --helmVersion ${{ inputs.version }} \
-          --helmFile $GITHUB_WORKSPACE/${{ inputs.name }}-values.yaml \
+          --helmFile ${{ inputs.config }} \
           --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
           --helmChart ${{ inputs.chart }}
       shell: bash
@@ -169,7 +158,7 @@ runs:
           echo "==================================================="
         done
       env:
-        VALUES_FILE: ${{ inputs.name }}-values.yaml
+        VALUES_FILE: ${{ inputs.config }}
         NAMESPACE: ${{ steps.set-namespace.outputs.namespace }}
       shell: bash
 
@@ -183,7 +172,7 @@ runs:
         yarn starship start \
           --helmName ${{ inputs.name }} \
           --helmVersion ${{ inputs.version }} \
-          --helmFile $GITHUB_WORKSPACE/${{ inputs.name }}-values.yaml \
+          --helmFile ${{ inputs.config }} \
           --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
           --helmChart ${{ inputs.chart }}
       shell: bash
