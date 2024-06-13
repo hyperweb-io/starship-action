@@ -49,11 +49,15 @@ runs:
   using: composite
   steps:
 
-    - name: Create yarn.lock file if not exists
+    - name: Create yarn.lock and package.json file if not exists
       run: |
         if [ ! -f $GITHUB_WORKSPACE/yarn.lock ]; then
           echo 'Creating temporary yarn.lock file'
           echo '' > $GITHUB_WORKSPACE/yarn.lock
+        fi
+        if [ ! -f $GITHUB_WORKSPACE/package.json ]; then
+          echo 'Creating temporary package.json file'
+          echo '{}' > $GITHUB_WORKSPACE/package.json
         fi
       shell: bash
 
