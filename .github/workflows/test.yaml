@@ -53,7 +53,7 @@ jobs:
         id: starship
         with:
           name: test-with-values
-          values: config.yaml
+          config: config.yaml
 
       - name: Check kubectl pods
         run: |
@@ -131,7 +131,7 @@ jobs:
         with:
           name: test-kubeconfig
           kubeconfig: ${{ steps.kubeconfig.outputs.content }}
-          values: config.yaml
+          config: config.yaml
 
       - name: Check kubectl pods
         run: |
@@ -169,7 +169,7 @@ jobs:
         id: starship
         with:
           name: test-no-portforward
-          values: config.yaml
+          config: config.yaml
 
       - name: Check kubectl pods
         run: |
