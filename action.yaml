@@ -59,6 +59,7 @@ runs:
 
     - name: Setup Node.js
       uses: actions/setup-node@v4
+      if: inputs.cli-version != '0.0.0'  # Skip if cli-version is 0.0.0, expected to be used for local testing
       with:
         node-version: "20.x"
         cache: "yarn"
@@ -121,6 +122,7 @@ runs:
       shell: bash
 
     - name: Setup starshipjs client
+      if: inputs.cli-version != '0.0.0'  # Skip if cli-version is 0.0.0, expected to be used for local testing
       run: |
         yarn global add @starship-ci/cli@${{ inputs.cli-version }}
         starship --version
