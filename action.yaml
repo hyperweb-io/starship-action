@@ -128,7 +128,7 @@ runs:
     - name: Setup starshipjs client
       if: inputs.cli-version != '0.0.0'  # Skip if cli-version is 0.0.0, expected to be used for local testing
       run: |
-        yarn global add @starship-ci/cli@${{ inputs.cli-version }}
+        yarn add @starship-ci/cli@${{ inputs.cli-version }}
         yarn starship --version
       shell: bash
 
