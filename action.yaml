@@ -119,6 +119,10 @@ runs:
       if: inputs.cli-version != '0.0.0'  # Skip if cli-version is 0.0.0, expected to be used for local testing
       run: |
         yarn global add @starship-ci/cli@${{ inputs.cli-version }}
+      shell: bash
+
+    - name: Verify starship cli
+      run: |
         starship --version
       shell: bash
 
