@@ -118,13 +118,13 @@ runs:
     - name: Setup starshipjs client
       if: inputs.cli-version != '0.0.0'  # Skip if cli-version is 0.0.0, expected to be used for local testing
       run: |
-        yarn add @starship-ci/cli@${{ inputs.cli-version }}
-        yarn starship --version
+        yarn global add @starship-ci/cli@${{ inputs.cli-version }}
+        starship --version
       shell: bash
 
     - name: Setup starship helm repo
       run: |
-        yarn starship setup \
+        starship setup \
           --helmName ${{ inputs.name }} \
           --helmVersion ${{ inputs.version }} \
           --helmFile ${{ inputs.config }} \
@@ -138,7 +138,7 @@ runs:
       run: |
         helm delete ${{ inputs.name }} --debug --namespace ${{ steps.set-namespace.outputs.namespace }} --wait || true
         sleep 5
-        yarn starship start \
+        starship start \
           --helmName ${{ inputs.name }} \
           --helmVersion ${{ inputs.version }} \
           --helmFile ${{ inputs.config }} \
@@ -169,7 +169,7 @@ runs:
         helm delete ${{ inputs.name }} --debug --namespace ${{ steps.set-namespace.outputs.namespace }} --wait || true
         sleep 5
         kubectl get pods --namespace ${{ steps.set-namespace.outputs.namespace }}
-        yarn starship start \
+        starship start \
           --helmName ${{ inputs.name }} \
           --helmVersion ${{ inputs.version }} \
           --helmFile ${{ inputs.config }} \
