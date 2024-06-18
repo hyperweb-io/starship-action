@@ -180,3 +180,18 @@ runs:
           --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
           --helmChart ${{ inputs.chart }}
       shell: bash
+
+    - name: Helm install again, 3rd time is the charm
+      id: helm-install-3
+      if: steps.helm-install-2.outcome == 'failure'
+      run: |
+        helm delete ${{ inputs.name }} --debug --namespace ${{ steps.set-namespace.outputs.namespace }} --wait || true
+        sleep 5
+        kubectl get pods --namespace ${{ steps.set-namespace.outputs.namespace }}
+        starship start \
+          --helmName ${{ inputs.name }} \
+          --helmVersion ${{ inputs.version }} \
+          --helmFile ${{ inputs.config }} \
+          --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
+          --helmChart ${{ inputs.chart }}
+      shell: bash
