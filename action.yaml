@@ -11,11 +11,11 @@ inputs:
   version:
     description: "Version of devnet chart (default: v0.2.3)"
     required: false
-    default: "v0.2.3"
+    default: "v0.2.5"
   cli-version:
     description: "Version of @starship-ci/cli to use: default: 2.3.0"
     required: false
-    default: "2.5.6"
+    default: "2.7.0"
   kubeconfig:
     description: "Kubeconfig file for remote cluster, if set, will be used instead of creating kind cluster"
     required: false
