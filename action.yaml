@@ -8,14 +8,10 @@ inputs:
   config:
     description: "Path to the config file"
     required: true
-  version:
-    description: "Version of devnet chart (default: v0.2.3)"
-    required: false
-    default: "v0.2.5"
   cli-version:
-    description: "Version of @starship-ci/cli to use: default: 2.3.0"
+    description: "Version of @starship-ci/cli to use: default: 2.8.1"
     required: false
-    default: "2.7.0"
+    default: "2.8.1"
   kubeconfig:
     description: "Kubeconfig file for remote cluster, if set, will be used instead of creating kind cluster"
     required: false
@@ -129,9 +125,8 @@ runs:
     - name: Setup starship helm repo
       run: |
         starship setup \
+          --config ${{ inputs.config }} \
           --helmName ${{ inputs.name }} \
-          --helmVersion ${{ inputs.version }} \
-          --helmFile ${{ inputs.config }} \
           --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
           --helmChart ${{ inputs.chart }}
       shell: bash
@@ -143,9 +138,8 @@ runs:
         helm delete ${{ inputs.name }} --debug --namespace ${{ steps.set-namespace.outputs.namespace }} --wait || true
         sleep 5
         starship start \
+          --config ${{ inputs.config }} \
           --helmName ${{ inputs.name }} \
-          --helmVersion ${{ inputs.version }} \
-          --helmFile ${{ inputs.config }} \
           --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
           --helmChart ${{ inputs.chart }}
       shell: bash
@@ -174,9 +168,8 @@ runs:
         sleep 5
         kubectl get pods --namespace ${{ steps.set-namespace.outputs.namespace }}
         starship start \
+          --config ${{ inputs.config }} \
           --helmName ${{ inputs.name }} \
-          --helmVersion ${{ inputs.version }} \
-          --helmFile ${{ inputs.config }} \
           --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
           --helmChart ${{ inputs.chart }}
       shell: bash
@@ -189,9 +182,8 @@ runs:
         sleep 5
         kubectl get pods --namespace ${{ steps.set-namespace.outputs.namespace }}
         starship start \
+          --config ${{ inputs.config }} \
           --helmName ${{ inputs.name }} \
-          --helmVersion ${{ inputs.version }} \
-          --helmFile ${{ inputs.config }} \
           --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
           --helmChart ${{ inputs.chart }}
       shell: bash

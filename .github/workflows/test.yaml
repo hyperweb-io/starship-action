@@ -19,6 +19,9 @@ jobs:
       - name: Create yaml file
         run: |
           cat <<EOF > config.yaml
+          name: osmo-wasm
+          version: v0.2.6
+          
           chains:
             - id: osmosis-1
               name: osmosis
@@ -114,6 +117,9 @@ jobs:
       - name: Create yaml file
         run: |
           cat <<EOF > config.yaml
+          name: osmois
+          version: v0.2.6
+          
           chains:
           - id: osmosis-1
             name: osmosis
@@ -156,6 +162,9 @@ jobs:
       - name: Create yaml file
         run: |
           cat <<EOF > config.yaml
+          name: osmosis
+          version: v0.2.6
+          
           chains:
             - id: osmosis-1
               name: osmosis
