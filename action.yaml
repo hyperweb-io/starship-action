@@ -9,7 +9,7 @@ inputs:
     description: "Path to the config file"
     required: true
   cli-version:
-    description: "Version of @starship-ci/cli to use: default: 2.8.1"
+    description: "Version of @starship-ci/cli to use: default: 2.9.0"
     required: false
     default: "2.9.0"
   kubeconfig:
