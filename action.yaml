@@ -11,7 +11,7 @@ inputs:
   cli-version:
     description: "Version of @starship-ci/cli to use: default: 2.8.1"
     required: false
-    default: "2.8.1"
+    default: "2.9.0"
   kubeconfig:
     description: "Kubeconfig file for remote cluster, if set, will be used instead of creating kind cluster"
     required: false
@@ -126,9 +126,9 @@ runs:
       run: |
         starship setup \
           --config ${{ inputs.config }} \
-          --helmName ${{ inputs.name }} \
-          --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
-          --helmChart ${{ inputs.chart }}
+          --name ${{ inputs.name }} \
+          --namespace ${{ steps.set-namespace.outputs.namespace }} \
+          --chart ${{ inputs.chart }}
       shell: bash
 
     - name: Helm install
@@ -139,9 +139,9 @@ runs:
         sleep 5
         starship start \
           --config ${{ inputs.config }} \
-          --helmName ${{ inputs.name }} \
-          --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
-          --helmChart ${{ inputs.chart }}
+          --name ${{ inputs.name }} \
+          --namespace ${{ steps.set-namespace.outputs.namespace }} \
+          --chart ${{ inputs.chart }}
       shell: bash
 
     - name: Logs
@@ -169,9 +169,9 @@ runs:
         kubectl get pods --namespace ${{ steps.set-namespace.outputs.namespace }}
         starship start \
           --config ${{ inputs.config }} \
-          --helmName ${{ inputs.name }} \
-          --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
-          --helmChart ${{ inputs.chart }}
+          --name ${{ inputs.name }} \
+          --namespace ${{ steps.set-namespace.outputs.namespace }} \
+          --chart ${{ inputs.chart }}
       shell: bash
 
     - name: Helm install again, 3rd time is the charm
@@ -183,7 +183,7 @@ runs:
         kubectl get pods --namespace ${{ steps.set-namespace.outputs.namespace }}
         starship start \
           --config ${{ inputs.config }} \
-          --helmName ${{ inputs.name }} \
-          --helmNamespace ${{ steps.set-namespace.outputs.namespace }} \
-          --helmChart ${{ inputs.chart }}
+          --name ${{ inputs.name }} \
+          --namespace ${{ steps.set-namespace.outputs.namespace }} \
+          --chart ${{ inputs.chart }}
       shell: bash
