@@ -163,6 +163,7 @@ runs:
     - name: Helm install again
       id: helm-install-2
       if: steps.helm-install-1.outcome == 'failure'
+      continue-on-error: true
       run: |
         helm delete ${{ inputs.name }} --debug --namespace ${{ steps.set-namespace.outputs.namespace }} --wait || true
         sleep 5
