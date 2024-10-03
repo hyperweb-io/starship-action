@@ -9,9 +9,9 @@ inputs:
     description: "Path to the config file"
     required: true
   cli-version:
-    description: "Version of @starship-ci/cli to use: default: 2.9.0"
+    description: "Version of @starship-ci/cli to use: default: 2.10.2"
     required: false
-    default: "2.9.0"
+    default: "2.10.2"
   kubeconfig:
     description: "Kubeconfig file for remote cluster, if set, will be used instead of creating kind cluster"
     required: false
@@ -32,6 +32,10 @@ inputs:
     description: "Kubernetes namespace to deploy helm charts on (default: ci-{github.repository}-{github.workflow}-{github.ref} )"
     required: false
     default: ""
+  timeout:
+    description: "Timeout for helm install (default: 10m)"
+    required: false
+    default: "10m"
 
 outputs:
   namespace:
@@ -141,7 +145,8 @@ runs:
           --config ${{ inputs.config }} \
           --name ${{ inputs.name }} \
           --namespace ${{ steps.set-namespace.outputs.namespace }} \
-          --chart ${{ inputs.chart }}
+          --chart ${{ inputs.chart }} \
+          --timeout ${{ inputs.timeout }}
       shell: bash
 
     - name: Logs
@@ -172,7 +177,8 @@ runs:
           --config ${{ inputs.config }} \
           --name ${{ inputs.name }} \
           --namespace ${{ steps.set-namespace.outputs.namespace }} \
-          --chart ${{ inputs.chart }}
+          --chart ${{ inputs.chart }} \
+          --timeout ${{ inputs.timeout }}
       shell: bash
 
     - name: Helm install again, 3rd time is the charm
@@ -186,5 +192,6 @@ runs:
           --config ${{ inputs.config }} \
           --name ${{ inputs.name }} \
           --namespace ${{ steps.set-namespace.outputs.namespace }} \
-          --chart ${{ inputs.chart }}
+          --chart ${{ inputs.chart }} \
+          --timeout ${{ inputs.timeout }}
       shell: bash
