@@ -22,6 +22,7 @@ For more information on inputs, see the [API Documentation](https://developer.gi
 - `repo`: Optional, Helm repo to fetch the chart from (default: https://cosmology-tech.github.io/starship)
 - `name`: Optional, Release name for the helm chart deployment (default: `starship-devnet`)
 - `chart`: Optional, Name of  the help chart to use. Recommended: use default (default: `starship/devnet`)
+- `timeout`: Optional, Timeout for helm install (default: `10m`)
 
 ### Outputs
 - `namespace`: Namespace where the devnet is deployed
@@ -43,7 +44,7 @@ jobs:
       - uses: actions/checkout@v4
         
       - name: Create starship devnet for osmos and wasm
-        uses: cosmology-tech/starship-action@v0.5.4
+        uses: cosmology-tech/starship-action@v0.5.6
         with:
           config: ./starship-config.yaml
 ```
