@@ -132,8 +132,7 @@ runs:
           --config ${{ inputs.config }} \
           --name ${{ inputs.name }} \
           --namespace ${{ steps.set-namespace.outputs.namespace }} \
-          --chart ${{ inputs.chart }} \
-          --repo ${{ inputs.repo }}
+          --chart ${{ inputs.chart }}
       shell: bash
 
     - name: Helm install
@@ -147,7 +146,6 @@ runs:
           --name ${{ inputs.name }} \
           --namespace ${{ steps.set-namespace.outputs.namespace }} \
           --chart ${{ inputs.chart }} \
-          --repo ${{ inputs.repo }} \
           --timeout ${{ inputs.timeout }}
       shell: bash
 
@@ -180,7 +178,6 @@ runs:
           --name ${{ inputs.name }} \
           --namespace ${{ steps.set-namespace.outputs.namespace }} \
           --chart ${{ inputs.chart }} \
-          --repo ${{ inputs.repo }} \
           --timeout ${{ inputs.timeout }}
       shell: bash
 
@@ -196,6 +193,5 @@ runs:
           --name ${{ inputs.name }} \
           --namespace ${{ steps.set-namespace.outputs.namespace }} \
           --chart ${{ inputs.chart }} \
-          --repo ${{ inputs.repo }} \
           --timeout ${{ inputs.timeout }}
       shell: bash
