@@ -1,8 +1,8 @@
 # Starship Action
 
-[![](https://github.com/cosmology-tech/starship-action/workflows/Test/badge.svg?branch=main)](https://github.com/cosmology-tech/starship-action/actions)
+[![](https://github.com/hyperweb-io/starship-action/workflows/Test/badge.svg?branch=main)](https://github.com/hyperweb-io/starship-action/actions)
 
-GitHub Action for creating and running [starship devnets](https://github.com/cosmology-tech/starship) in CI.
+GitHub Action for creating and running [starship devnets](https://github.com/hyperweb-io/starship) in CI.
 
 ## Usage
 
@@ -19,7 +19,7 @@ For more information on inputs, see the [API Documentation](https://developer.gi
 - `cli-version`: Optional, version of @starship-ci/cli to use (default: `2.9.0`)
 - `kubeconfig`: Optional, Kubeconfig for remote cluster, if set, will be used instead of creating local kind cluster
 - `namespace`: Optional, Kubernetes namespace to which helm charts will be deployed. If not found, namespace will be created. (default: `ci-${{ github.repository }}-${{ github.workflow }}-${{ github.ref }}`)
-- `repo`: Optional, Helm repo to fetch the chart from (default: https://cosmology-tech.github.io/starship)
+- `repo`: Optional, Helm repo to fetch the chart from (default: https://hyperweb-io.github.io/starship)
 - `name`: Optional, Release name for the helm chart deployment (default: `starship-devnet`)
 - `chart`: Optional, Name of  the help chart to use. Recommended: use default (default: `starship/devnet`)
 - `timeout`: Optional, Timeout for helm install (default: `10m`)
@@ -44,7 +44,7 @@ jobs:
       - uses: actions/checkout@v4
         
       - name: Create starship devnet for osmos and wasm
-        uses: cosmology-tech/starship-action@v0.5.6
+        uses: hyperweb-io/starship-action@v0.5.6
         with:
           config: ./starship-config.yaml
 ```

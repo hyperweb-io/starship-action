@@ -21,9 +21,9 @@ inputs:
     required: false
     default: "starship/devnet"
   repo:
-    description: "Helm repo to fetch the chart from (default: https://cosmology-tech.github.io/starship)"
+    description: "Helm repo to fetch the chart from (default: https://hyperweb-io.github.io/starship)"
     required: false
-    default: "https://cosmology-tech.github.io/starship"
+    default: "https://hyperweb-io.github.io/starship"
   name:
     description: "Helm chart release name for installing helm chart (default: starship-devnet)"
     required: false
