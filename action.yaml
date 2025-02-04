@@ -9,9 +9,9 @@ inputs:
     description: "Path to the config file"
     required: true
   cli-version:
-    description: "Version of @starship-ci/cli to use: default: 2.14.0"
+    description: "Version of @starship-ci/cli to use: default: 3.2.0"
     required: false
-    default: "2.14.0"
+    default: "3.2.0"
   kubeconfig:
     description: "Kubeconfig file for remote cluster, if set, will be used instead of creating kind cluster"
     required: false
