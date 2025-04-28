@@ -1,6 +1,6 @@
 # Starship Action
 
-[![](https://github.com/hyperweb-io/starship-action/workflows/Test/badge.svg?branch=main)](https://github.com/hyperweb-io/starship-action/actions)
+[![](https://github.com/hyperweb-io/starship-action/workflows/test/badge.svg?branch=main)](https://github.com/hyperweb-io/starship-action/actions)
 
 GitHub Action for creating and running [starship devnets](https://github.com/hyperweb-io/starship) in CI.
 
