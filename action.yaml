@@ -91,7 +91,7 @@ runs:
         mkdir -p ~/.kube
         # If input looks like a file path and exists, copy it
         if [ -f ${{ inputs.kubeconfig }} ]; then
-          echo "Copying kubeconfig from ${inputs.kubeconfig} to ~/.kube/config"
+          echo "Copying kubeconfig from ${{ inputs.kubeconfig }} to ~/.kube/config"
           cp -n ${{ inputs.kubeconfig }} ~/.kube/config
         else
           # Otherwise treat as content
