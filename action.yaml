@@ -88,25 +88,16 @@ runs:
     - name: Create kubeconfig file
       if: ${{ inputs.kubeconfig != '' }}
       run: |
-        echo "Processing kubeconfig input..."
         mkdir -p ~/.kube
-        if [[ "${{ inputs.kubeconfig }}" =~ ^(/|~|\.)/.*(\.yaml|\.yml|\.config)$ ]]; then
-          echo "Input appears to be a file path: ${{ inputs.kubeconfig }}"
-          # If input is a file path, copy it only if it's different from target
-          input_path=$(realpath -m "${{ inputs.kubeconfig }}")
-          target_path=$(realpath -m ~/.kube/config)
-          if [[ "$input_path" != "$target_path" ]]; then
-            echo "Copying kubeconfig from $input_path to $target_path"
-            cp "${{ inputs.kubeconfig }}" ~/.kube/config
-          else
-            echo "Input path matches target path, skipping copy"
-          fi
+        # If input looks like a file path and exists, copy it
+        if [ -f "${{ inputs.kubeconfig }}" ]; then
+          echo "Copying kubeconfig from ${inputs.kubeconfig} to ~/.kube/config"
+          cp -n "${{ inputs.kubeconfig }}" ~/.kube/config
         else
-          echo "Input appears to be direct kubeconfig content, writing to ~/.kube/config"
-          # If input is the actual kubeconfig content, write it
-          echo -e "${{ inputs.kubeconfig }}" > ~/.kube/config
+          # Otherwise treat as content
+          echo "Input appears to be direct kubeconfig content, writing to $HOME/.kube/config"
+          echo "${{ inputs.kubeconfig }}" > ~/.kube/config
         fi
-        echo "Kubeconfig setup complete"
       shell: bash
 
     - name: Set namespace
