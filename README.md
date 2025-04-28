@@ -1,6 +1,9 @@
 # Starship Action
 
-[![](https://github.com/hyperweb-io/starship-action/workflows/test/badge.svg?branch=main)](https://github.com/hyperweb-io/starship-action/actions)
+<p align="left" width="100%">
+   <a href="https://github.com/hyperweb-io/starship-action/actions/workflows/test.yaml"><img height="20" src="https://github.com/hyperweb-io/starship-action/actions/workflows/test.yaml/badge.svg"></a>
+</p>
+
 
 GitHub Action for creating and running [starship devnets](https://github.com/hyperweb-io/starship) in CI.
 
