@@ -9,9 +9,9 @@ inputs:
     description: "Path to the config file"
     required: true
   cli-version:
-    description: "Version of @starship-ci/cli to use: default: 3.8.0"
+    description: "Version of @starship-ci/cli to use: default: 3.10.0"
     required: false
-    default: "3.8.0"
+    default: "3.10.0"
   kubeconfig:
     description: "Kubeconfig file for remote cluster, if set, will be used instead of creating kind cluster"
     required: false
@@ -89,7 +89,15 @@ runs:
       if: ${{ inputs.kubeconfig != '' }}
       run: |
         mkdir -p ~/.kube
-        echo -e "${{ inputs.kubeconfig }}" > ~/.kube/config
+        if [[ "${{ inputs.kubeconfig }}" =~ ^(/|~|\.)/.*(\.yaml|\.yml|\.config)$ ]]; then
+          # If input is a file path, copy it only if it's different from target
+          if [[ "${{ inputs.kubeconfig }}" != "$HOME/.kube/config" ]]; then
+            cp "${{ inputs.kubeconfig }}" ~/.kube/config
+          fi
+        else
+          # If input is the actual kubeconfig content, write it
+          echo -e "${{ inputs.kubeconfig }}" > ~/.kube/config
+        fi
       shell: bash
 
     - name: Set namespace
@@ -109,11 +117,6 @@ runs:
       shell: bash
       env:
         INPUT_NAMESPACE: ${{ inputs.namespace }}
-
-    - name: Create namespace if nonexistent
-      run: |
-        kubectl create namespace ${{ steps.set-namespace.outputs.namespace }} || true
-      shell: bash
 
     - name: Setup starshipjs client
       if: inputs.cli-version != '0.0.0'  # Skip if cli-version is 0.0.0, expected to be used for local testing
