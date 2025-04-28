@@ -19,7 +19,7 @@ For more information, reference the GitHub Help Documentation for [Creating a wo
 For more information on inputs, see the [API Documentation](https://developer.github.com/v3/repos/releases/#input)
 
 - `config`: Required, config file for helm chart for starship devnet inputs
-- `cli-version`: Optional, version of @starship-ci/cli to use (default: `3.3.0`)
+- `cli-version`: Optional, version of @starship-ci/cli to use (default: `3.10.0`)
 - `kubeconfig`: Optional, Kubeconfig for remote cluster, if set, will be used instead of creating local kind cluster
 - `namespace`: Optional, Kubernetes namespace to which helm charts will be deployed. If not found, namespace will be created. (default: `ci-${{ github.repository }}-${{ github.workflow }}-${{ github.ref }}`)
 - `repo`: Optional, Helm repo to fetch the chart from (default: https://hyperweb-io.github.io/starship)
@@ -33,7 +33,7 @@ For more information on inputs, see the [API Documentation](https://developer.gi
 
 ### Example workflow
 
-Chreate a workflow (eg: `.github/workflows/create-osmosis-wasmd.yml`)
+Chreate a workflow (eg: `.github/workflows/starship.yaml`)
 ```yaml
 name: Create Starship devnet
 
@@ -47,7 +47,7 @@ jobs:
       - uses: actions/checkout@v4
         
       - name: Create starship devnet for osmos and wasm
-        uses: hyperweb-io/starship-action@v0.5.9
+        uses: hyperweb-io/starship-action@0.5.9
         with:
           config: ./starship-config.yaml
 ```
