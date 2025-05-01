@@ -92,7 +92,7 @@ jobs:
       - uses: actions/checkout@v4
         
       - name: Create starship devnet for osmos and wasm
-        uses: hyperweb-io/starship-action@0.5.9
+        uses: hyperweb-io/starship-action@1.0.0
         with:
           config: ./starship-config.yaml
 ```
