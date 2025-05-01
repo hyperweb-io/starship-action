@@ -80,11 +80,10 @@ jobs:
 
       - name: Cleanup cluster
         run: |
-          helm delete $NAME --debug --namespace $NAMESPACE --wait
+          starship stop --config config.yaml --namespace $NAMESPACE || true
           kubectl delete namespace $NAMESPACE --wait=true
         env:
           NAMESPACE: ${{ steps.starship.outputs.namespace }}
-          NAME: ${{ steps.starship.outputs.name }}
 
   test-with-remote-cluster:
     runs-on: ubuntu-latest
@@ -147,11 +146,10 @@ jobs:
 
       - name: Cleanup cluster
         run: |
-          helm delete $NAME --debug --namespace $NAMESPACE --wait
+          starship stop --config config.yaml --namespace $NAMESPACE || true
           kubectl delete namespace $NAMESPACE --wait=true
         env:
           NAMESPACE: ${{ steps.starship.outputs.namespace }}
-          NAME: ${{ steps.starship.outputs.name }}
 
   test-with-no-ports:
     runs-on: ubuntu-latest
