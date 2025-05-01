@@ -133,7 +133,6 @@ runs:
       run: |
         starship setup \
           --config ${{ inputs.config }} \
-          --name ${{ inputs.name }} \
           --namespace ${{ steps.set-namespace.outputs.namespace }} \
           --chart ${{ inputs.chart }}
       shell: bash
@@ -142,11 +141,10 @@ runs:
       id: helm-install-1
       continue-on-error: true
       run: |
-        helm delete ${{ inputs.name }} --debug --namespace ${{ steps.set-namespace.outputs.namespace }} --wait || true
+        starship stop --config ${{ inputs.config }} --namespace ${{ steps.set-namespace.outputs.namespace }} || true
         sleep 5
         starship start \
           --config ${{ inputs.config }} \
-          --name ${{ inputs.name }} \
           --namespace ${{ steps.set-namespace.outputs.namespace }} \
           --chart ${{ inputs.chart }} \
           --timeout ${{ inputs.timeout }}
@@ -173,7 +171,7 @@ runs:
       if: steps.helm-install-1.outcome == 'failure'
       continue-on-error: true
       run: |
-        helm delete ${{ inputs.name }} --debug --namespace ${{ steps.set-namespace.outputs.namespace }} --wait || true
+        starship stop --config ${{ inputs.config }} --namespace ${{ steps.set-namespace.outputs.namespace }} || true
         sleep 5
         kubectl get pods --namespace ${{ steps.set-namespace.outputs.namespace }}
         starship start \
@@ -188,7 +186,7 @@ runs:
       id: helm-install-3
       if: steps.helm-install-2.outcome == 'failure'
       run: |
-        helm delete ${{ inputs.name }} --debug --namespace ${{ steps.set-namespace.outputs.namespace }} --wait || true
+        starship stop --config ${{ inputs.config }} --namespace ${{ steps.set-namespace.outputs.namespace }} || true
         sleep 5
         kubectl get pods --namespace ${{ steps.set-namespace.outputs.namespace }}
         starship start \

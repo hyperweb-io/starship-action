@@ -14,13 +14,13 @@ jobs:
 
     steps:
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Create yaml file
         run: |
           cat <<EOF > config.yaml
           name: osmo-wasm
-          version: v0.2.6
+          version: 1.7.0
           
           chains:
             - id: osmosis-1
@@ -90,7 +90,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - run: echo -e "$TEMP_KUBECONFIG" > /tmp/kubeconfig
         shell: bash
@@ -118,7 +118,7 @@ jobs:
         run: |
           cat <<EOF > config.yaml
           name: osmois
-          version: v0.2.6
+          version: 1.7.0
           
           chains:
           - id: osmosis-1
@@ -157,13 +157,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Create yaml file
         run: |
           cat <<EOF > config.yaml
           name: osmosis
-          version: v0.2.6
+          version: 1.7.0
           
           chains:
             - id: osmosis-1
