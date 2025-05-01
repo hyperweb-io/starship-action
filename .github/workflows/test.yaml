@@ -190,8 +190,7 @@ jobs:
 
       - name: Cleanup cluster
         run: |
-          helm delete $NAME --debug --namespace $NAMESPACE --wait
+          starship stop --config config.yaml --namespace $NAMESPACE || true
           kubectl delete namespace $NAMESPACE --wait=true
         env:
           NAMESPACE: ${{ steps.starship.outputs.namespace }}
-          NAME: ${{ steps.starship.outputs.name }}

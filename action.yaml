@@ -24,10 +24,6 @@ inputs:
     description: "Helm repo to fetch the chart from (default: https://hyperweb-io.github.io/starship)"
     required: false
     default: "https://hyperweb-io.github.io/starship"
-  name:
-    description: "Helm chart release name for installing helm chart (default: starship-devnet)"
-    required: false
-    default: "starship-devnet"
   namespace:
     description: "Kubernetes namespace to deploy helm charts on (default: ci-{github.repository}-{github.workflow}-{github.ref} )"
     required: false
