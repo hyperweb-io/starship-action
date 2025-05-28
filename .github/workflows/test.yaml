@@ -10,6 +10,7 @@ on:
 
 jobs:
   test-with-values:
+    timeout-minutes: 15
     runs-on: ubuntu-latest
 
     steps:
@@ -86,6 +87,7 @@ jobs:
 
   test-with-remote-cluster:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
 
       - uses: actions/checkout@v4
@@ -151,6 +153,7 @@ jobs:
 
   test-with-no-ports:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
 
       - uses: actions/checkout@v4
