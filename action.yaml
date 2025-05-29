@@ -24,10 +24,6 @@ inputs:
     description: "Helm repo to fetch the chart from (default: https://hyperweb-io.github.io/starship)"
     required: false
     default: "https://hyperweb-io.github.io/starship"
-  name:
-    description: "Helm chart release name for installing helm chart"
-    required: false
-    default: "starship"
   namespace:
     description: "Kubernetes namespace to deploy helm charts on (default: ci-{github.repository}-{github.workflow}-{github.ref} )"
     required: false
@@ -41,9 +37,6 @@ outputs:
   namespace:
     description: "Kubernetes namespace to which helm charts were deployed"
     value: ${{ steps.set-namespace.outputs.namespace }}
-  name:
-    description: "Helm chart release name for installing helm chart"
-    value: ${{ inputs.name }}
 
 runs:
   using: composite
@@ -146,7 +139,6 @@ runs:
         sleep 5
         starship start \
           --config ${{ inputs.config }} \
-          --name ${{ inputs.name }} \
           --namespace ${{ steps.set-namespace.outputs.namespace }} \
           --repoUrl ${{ inputs.repo }} \
           --chart ${{ inputs.chart }} \
@@ -179,7 +171,6 @@ runs:
         kubectl get pods --namespace ${{ steps.set-namespace.outputs.namespace }}
         starship start \
           --config ${{ inputs.config }} \
-          --name ${{ inputs.name }} \
           --namespace ${{ steps.set-namespace.outputs.namespace }} \
           --repoUrl ${{ inputs.repo }} \
           --chart ${{ inputs.chart }} \
@@ -195,7 +186,6 @@ runs:
         kubectl get pods --namespace ${{ steps.set-namespace.outputs.namespace }}
         starship start \
           --config ${{ inputs.config }} \
-          --name ${{ inputs.name }} \
           --namespace ${{ steps.set-namespace.outputs.namespace }} \
           --repoUrl ${{ inputs.repo }} \
           --chart ${{ inputs.chart }} \

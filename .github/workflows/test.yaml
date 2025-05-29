@@ -10,6 +10,7 @@ on:
 
 jobs:
   test-with-values:
+    timeout-minutes: 15
     runs-on: ubuntu-latest
 
     steps:
@@ -55,7 +56,6 @@ jobs:
       - uses: ./
         id: starship
         with:
-          name: test-with-values
           config: config.yaml
 
       - name: Check kubectl pods
@@ -87,6 +87,7 @@ jobs:
 
   test-with-remote-cluster:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
 
       - uses: actions/checkout@v4
@@ -134,7 +135,6 @@ jobs:
       - uses: ./
         id: starship
         with:
-          name: test-kubeconfig
           kubeconfig: ${{ steps.kubeconfig.outputs.content }}
           config: config.yaml
 
@@ -153,6 +153,7 @@ jobs:
 
   test-with-no-ports:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
 
       - uses: actions/checkout@v4
@@ -175,7 +176,6 @@ jobs:
       - uses: ./
         id: starship
         with:
-          name: test-no-portforward
           config: config.yaml
 
       - name: Check kubectl pods
